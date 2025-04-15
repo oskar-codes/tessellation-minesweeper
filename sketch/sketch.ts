@@ -1,12 +1,9 @@
 // GLOBAL VARS & TYPES
 let numberOfShapesControl: p5.Element;
-let image_lebron: p5.Image;
 
 // P5 WILL AUTOMATICALLY USE GLOBAL MODE IF A DRAW() FUNCTION IS DEFINED
 function setup() {
   console.log("🚀 - Setup initialized - P5 is running");
-
-  image_lebron = loadImage("resources/lebronjames.jpeg");
 
   createCanvas(windowWidth, windowHeight)
   rectMode(CENTER).noFill().frameRate(30);
@@ -23,7 +20,7 @@ function windowResized() {
 function draw() {
   
    // CLEAR BACKGROUND
-  background(image_lebron, 150);
+  background(0);
 
   // CENTER OF SCREEN
   translate(width / 2,height / 2);

@@ -62,10 +62,8 @@ var PolygonHelper = (function () {
     return PolygonHelper;
 }());
 var numberOfShapesControl;
-var image_lebron;
 function setup() {
     console.log("🚀 - Setup initialized - P5 is running");
-    image_lebron = loadImage("resources/lebronjames.jpeg");
     createCanvas(windowWidth, windowHeight);
     rectMode(CENTER).noFill().frameRate(30);
     numberOfShapesControl = createSlider(1, 30, 15, 1).position(10, 10).style("width", "100px");
@@ -74,7 +72,7 @@ function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
 }
 function draw() {
-    background(image_lebron, 150);
+    background(0);
     translate(width / 2, height / 2);
     var numberOfShapes = numberOfShapesControl.value();
     var colours = ColorHelper.getColorsArray(numberOfShapes);
