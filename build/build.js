@@ -61,6 +61,62 @@ var PolygonHelper = (function () {
     };
     return PolygonHelper;
 }());
+function drawShape(points) {
+    beginShape();
+    for (var _i = 0, points_1 = points; _i < points_1.length; _i++) {
+        var point_1 = points_1[_i];
+        vertex(point_1.x, point_1.y);
+    }
+    endShape(CLOSE);
+}
+function translateShape(shape, translation) {
+    return shape.map(function (point) { return ({
+        x: point.x + translation.x,
+        y: point.y + translation.y,
+    }); });
+}
+function drawTesselation(tessellation, startCoord) {
+    for (var numUnitsX = 0; numUnitsX < tessellation.translationsX.numUnits; ++numUnitsX) {
+        for (var _i = 0, _a = tessellation.unit; _i < _a.length; _i++) {
+            var unit = _a[_i];
+            var translatedUnit = translateShape(unit, {
+                x: startCoord.x + numUnitsX * tessellation.translationsX.translation.x,
+                y: startCoord.y + numUnitsX * tessellation.translationsX.translation.y,
+            });
+            drawShape(translatedUnit);
+        }
+        for (var numUnitsY = 0; numUnitsY < tessellation.translationsY.numUnits; numUnitsY++) {
+            for (var _b = 0, _c = tessellation.unit; _b < _c.length; _b++) {
+                var unit = _c[_b];
+                var translatedUnit = translateShape(unit, {
+                    x: startCoord.x + numUnitsX * tessellation.translationsX.translation.x + numUnitsY * tessellation.translationsY.translation.x,
+                    y: startCoord.y + numUnitsX * tessellation.translationsX.translation.y + numUnitsY * tessellation.translationsY.translation.y,
+                });
+                drawShape(translatedUnit);
+            }
+        }
+    }
+}
+var TESSELLATIONS = {
+    DEFAULT: {
+        unit: [
+            [
+                { x: 0, y: 0 },
+                { x: 100, y: 0 },
+                { x: 100, y: 100 },
+                { x: 0, y: 100 },
+            ]
+        ],
+        translationsX: {
+            translation: { x: 100, y: 0, angle: 0 },
+            numUnits: 10,
+        },
+        translationsY: {
+            translation: { x: 50, y: 100, angle: 0 },
+            numUnits: 10,
+        },
+    }
+};
 var numberOfShapesControl;
 var image_lebron;
 function setup() {
@@ -68,28 +124,14 @@ function setup() {
     image_lebron = loadImage("resources/lebronjames.jpeg");
     createCanvas(windowWidth, windowHeight);
     rectMode(CENTER).noFill().frameRate(30);
-    numberOfShapesControl = createSlider(1, 30, 15, 1).position(10, 10).style("width", "100px");
 }
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
 }
 function draw() {
     background(image_lebron, 150);
-    translate(width / 2, height / 2);
-    var numberOfShapes = numberOfShapesControl.value();
-    var colours = ColorHelper.getColorsArray(numberOfShapes);
-    var speed = (frameCount / (numberOfShapes * 30)) * 2;
-    for (var i = 0; i < numberOfShapes; i++) {
-        push();
-        var lineWidth = 8;
-        var spin = speed * (numberOfShapes - i);
-        var numberOfSides = 3 + i;
-        var width_1 = 40 * i;
-        strokeWeight(lineWidth);
-        stroke(colours[i]);
-        rotate(spin);
-        PolygonHelper.draw(numberOfSides, width_1);
-        pop();
-    }
+    fill(255, 0, 0);
+    stroke(0, 0, 0);
+    drawTesselation(TESSELLATIONS.DEFAULT, { x: 0, y: 0 });
 }
 //# sourceMappingURL=build.js.map

@@ -14,21 +14,49 @@ function translateShape(shape: Shape, translation: Point): Shape {
   }));
 }
 
-interface Tessellation {
+type TessellationTranslation = {
+  translation: Translation;
   numUnits: number;
+}
+
+interface Tessellation {
   unit: Shape[];
-  translations: Translation[];
+  translationsX: TessellationTranslation;
+  translationsY: TessellationTranslation;
 }
 
 function drawTesselation(tessellation: Tessellation, startCoord: Point) {
-  // Start by drawing the first unit at startCoord, then recursively draw the rest of the units
-  // using the translations provided in the tessellation object, until numUnits is reached.
+  // Draw each translation numUnits times using dynamic programming: do the first translation, 
+  // then move on to the second one, where you apply on each unit of the first translation the second one, and so on.
+  // This way you can draw the whole tessellation without recursion.
 
-  drawUnit(tessellation, 0, startCoord);
+  for (let numUnitsX = 0; numUnitsX < tessellation.translationsX.numUnits; ++numUnitsX) {
+    // Draw the first translation
+    for (const unit of tessellation.unit) {
+      const translatedUnit = translateShape(unit, {
+        x: startCoord.x + numUnitsX * tessellation.translationsX.translation.x,
+        y: startCoord.y + numUnitsX * tessellation.translationsX.translation.y,
+      });
+      drawShape(translatedUnit);
+    }
+    for (let numUnitsY = 0; numUnitsY < tessellation.translationsY.numUnits; numUnitsY++) {
+      // Draw the second translation
+      for (const unit of tessellation.unit) {
+        const translatedUnit = translateShape(unit, {
+          x: startCoord.x + numUnitsX * tessellation.translationsX.translation.x + numUnitsY * tessellation.translationsY.translation.x,
+          y: startCoord.y + numUnitsX * tessellation.translationsX.translation.y + numUnitsY * tessellation.translationsY.translation.y,
+        });
+        drawShape(translatedUnit);
+      }
+    }
+  }
+
+  
+
 
 }
 
-function drawUnit(tessellation: Tessellation, drawnUnits: number, coords: Point) {
+/*function drawUnit(tessellation: Tessellation, drawnUnits: number, coords: Point) {
   for (const unit of tessellation.unit) {
     drawShape(translateShape(unit, coords));
   }
@@ -42,7 +70,7 @@ function drawUnit(tessellation: Tessellation, drawnUnits: number, coords: Point)
       drawUnit(tessellation, drawnUnits + tessellation.translations.length, newCoords);
     }
   }
-}
+}*/
 
 
 
@@ -56,9 +84,13 @@ const TESSELLATIONS: Record<string, Tessellation> = {
         { x: 0, y: 100 },
       ]
     ],
-    translations: [
-      { x: 0, y: 100, angle: 0 },
-      { x: 100, y: 0, angle: 0 },
-    ]
+    translationsX: {
+      translation: { x: 100, y: 0, angle: 0 },
+      numUnits: 10,
+    },
+    translationsY: {
+      translation: { x: 50, y: 100, angle: 0 },
+      numUnits: 10,
+    },
   }
 }
