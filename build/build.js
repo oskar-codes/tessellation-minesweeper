@@ -115,7 +115,209 @@ var TESSELLATIONS = {
             translation: { x: 50, y: 100, angle: 0 },
             numUnits: 10,
         },
-    }
+    },
+    TRIANGLE: {
+        unit: [
+            [
+                { x: 0, y: 0 },
+                { x: 100, y: 0 },
+                { x: 50, y: 50 * Math.sqrt(3) },
+            ],
+            [
+                { x: 100, y: 0 },
+                { x: 150, y: 50 * Math.sqrt(3) },
+                { x: 50, y: 50 * Math.sqrt(3) },
+            ],
+        ],
+        translationsX: {
+            translation: { x: 100, y: 0, angle: 0 },
+            numUnits: 10,
+        },
+        translationsY: {
+            translation: { x: 50, y: 50 * Math.sqrt(3), angle: 0 },
+            numUnits: 10,
+        },
+    },
+    HEXAGON: {
+        unit: [
+            [
+                { x: -100, y: 0 },
+                { x: -50, y: -50 * Math.sqrt(3) },
+                { x: 50, y: -50 * Math.sqrt(3) },
+                { x: 100, y: 0 },
+                { x: 50, y: 50 * Math.sqrt(3) },
+                { x: -50, y: 50 * Math.sqrt(3) }
+            ],
+        ],
+        translationsX: {
+            translation: { x: 150, y: 50 * Math.sqrt(3), angle: 0 },
+            numUnits: 10,
+        },
+        translationsY: {
+            translation: { x: 0, y: 100 * Math.sqrt(3), angle: 0 },
+            numUnits: 10,
+        },
+    },
+    SEMI_REGULAR_HEX_TRIANGLE: {
+        unit: [
+            [
+                { x: 0, y: 0 },
+                { x: 50, y: -50 * Math.sqrt(3) },
+                { x: 150, y: -50 * Math.sqrt(3) },
+                { x: 200, y: 0 },
+                { x: 150, y: 50 * Math.sqrt(3) },
+                { x: 50, y: 50 * Math.sqrt(3) }
+            ],
+            [
+                { x: 150, y: -50 * Math.sqrt(3) },
+                { x: 250, y: -50 * Math.sqrt(3) },
+                { x: 200, y: 0 },
+            ],
+            [
+                { x: 150, y: 50 * Math.sqrt(3) },
+                { x: 250, y: 50 * Math.sqrt(3) },
+                { x: 200, y: 0 },
+            ]
+        ],
+        translationsX: {
+            translation: { x: 200, y: 0, angle: 0 },
+            numUnits: 10,
+        },
+        translationsY: {
+            translation: { x: 100, y: 100 * Math.sqrt(3), angle: 0 },
+            numUnits: 10,
+        },
+    },
+    SEMI_REGULAR_OCTOGON_SQUARE: {
+        unit: [
+            [
+                { x: 0, y: 0 },
+                { x: 50 * Math.sqrt(2), y: -50 * Math.sqrt(2) },
+                { x: 100 + 50 * Math.sqrt(2), y: -50 * Math.sqrt(2) },
+                { x: 100 + 100 * Math.sqrt(2), y: 0 },
+                { x: 100 + 100 * Math.sqrt(2), y: 100 },
+                { x: 100 + 50 * Math.sqrt(2), y: 100 + 50 * Math.sqrt(2) },
+                { x: 50 * Math.sqrt(2), y: 100 + 50 * Math.sqrt(2) },
+                { x: 0, y: 100 },
+            ],
+            [
+                { x: 100 + 100 * Math.sqrt(2), y: 0 },
+                { x: 200 + 100 * Math.sqrt(2), y: 0 },
+                { x: 200 + 100 * Math.sqrt(2), y: 100 },
+                { x: 100 + 100 * Math.sqrt(2), y: 100 },
+            ],
+        ],
+        translationsX: {
+            translation: { x: 100 + 50 * Math.sqrt(2), y: -(100 + 50 * Math.sqrt(2)), angle: 0 },
+            numUnits: 10,
+        },
+        translationsY: {
+            translation: { x: 100 + 50 * Math.sqrt(2), y: 100 + 50 * Math.sqrt(2), angle: 0 },
+            numUnits: 10,
+        },
+    },
+    SEMI_REGULAR_TWO_DIFF_SQUARES: {
+        unit: [
+            [
+                { x: 0, y: 0 },
+                { x: 200, y: 0 },
+                { x: 200, y: 200 },
+                { x: 0, y: 200 },
+            ],
+            [
+                { x: 200, y: 0 },
+                { x: 300, y: 0 },
+                { x: 300, y: 100 },
+                { x: 200, y: 100 },
+            ]
+        ],
+        translationsX: {
+            translation: { x: 100, y: -200, angle: 0 },
+            numUnits: 10,
+        },
+        translationsY: {
+            translation: { x: 200, y: 100, angle: 0 },
+            numUnits: 10,
+        },
+    },
+    SEMI_REGULAR_HEX_TRIANGLES_NON_E2E: {
+        unit: [
+            [
+                { x: 0, y: 0 },
+                { x: 100, y: -100 * Math.sqrt(3) },
+                { x: 300, y: -100 * Math.sqrt(3) },
+                { x: 400, y: 0 },
+                { x: 300, y: 100 * Math.sqrt(3) },
+                { x: 100, y: 100 * Math.sqrt(3) }
+            ],
+            [
+                { x: 300, y: -100 * Math.sqrt(3) },
+                { x: 400, y: -100 * Math.sqrt(3) },
+                { x: 350, y: -50 * Math.sqrt(3) },
+            ],
+            [
+                { x: 400, y: 0 },
+                { x: 450, y: 50 * Math.sqrt(3) },
+                { x: 350, y: 50 * Math.sqrt(3) },
+            ]
+        ],
+        translationsX: {
+            translation: { x: 100, y: -200 * Math.sqrt(3), angle: 0 },
+            numUnits: 10,
+        },
+        translationsY: {
+            translation: { x: 250, y: 150 * Math.sqrt(3), angle: 0 },
+            numUnits: 10,
+        },
+    },
+    SEMI_REGULAR_SURROUNDED_HEXAGON: {
+        unit: [
+            [
+                { x: 0, y: 0 },
+                { x: 100, y: 0 },
+                { x: 100, y: 100 },
+                { x: 0, y: 100 },
+            ],
+            [
+                { x: 100, y: 100 },
+                { x: 0, y: 100 },
+                { x: 50, y: 100 + 50 * Math.sqrt(3) },
+            ],
+            [
+                { x: 100, y: 100 },
+                { x: 50, y: 100 + 50 * Math.sqrt(3) },
+                { x: 50 + 50 * Math.sqrt(3), y: 150 + 50 * Math.sqrt(3) },
+                { x: 100 + 50 * Math.sqrt(3), y: 150 },
+            ],
+            [
+                { x: 50 + 50 * Math.sqrt(3), y: 150 + 50 * Math.sqrt(3) },
+                { x: 100 + 50 * Math.sqrt(3), y: 150 },
+                { x: 150 + 50 * Math.sqrt(3), y: 150 + 50 * Math.sqrt(3) },
+            ],
+            [
+                { x: 100 + 50 * Math.sqrt(3), y: 150 },
+                { x: 150 + 50 * Math.sqrt(3), y: 150 + 50 * Math.sqrt(3) },
+                { x: 150 + 100 * Math.sqrt(3), y: 100 + 50 * Math.sqrt(3) },
+                { x: 100 + 100 * Math.sqrt(3), y: 100 },
+            ],
+            [
+                { x: 100, y: 0 },
+                { x: 100, y: 100 },
+                { x: 100 + 50 * Math.sqrt(3), y: 150 },
+                { x: 100 + 100 * Math.sqrt(3), y: 100 },
+                { x: 100 + 100 * Math.sqrt(3), y: 0 },
+                { x: 100 + 50 * Math.sqrt(3), y: -50 }
+            ]
+        ],
+        translationsX: {
+            translation: { x: 100 + 100 * Math.sqrt(3), y: 0, angle: 0 },
+            numUnits: 10,
+        },
+        translationsY: {
+            translation: { x: 50 + 50 * Math.sqrt(3), y: 150 + 50 * Math.sqrt(3), angle: 0 },
+            numUnits: 10,
+        },
+    },
 };
 var numberOfShapesControl;
 var image_lebron;
@@ -132,6 +334,6 @@ function draw() {
     background(image_lebron, 150);
     fill(255, 0, 0);
     stroke(0, 0, 0);
-    drawTesselation(TESSELLATIONS.DEFAULT, { x: 0, y: 0 });
+    drawTesselation(TESSELLATIONS.SEMI_REGULAR_SURROUNDED_HEXAGON, { x: 50, y: 50 });
 }
 //# sourceMappingURL=build.js.map
