@@ -4,9 +4,10 @@ type Point = {
 };
 
 // Draw a shape using p5.js functions filled in red
-function drawShape(points: Point[]): void {
+function drawShape(shape: Shape): void {
   beginShape();
-  for (const point of points) {
+  fill(shape.color);
+  for (const point of shape.points) {
     vertex(point.x, point.y);
   }
   endShape(CLOSE);

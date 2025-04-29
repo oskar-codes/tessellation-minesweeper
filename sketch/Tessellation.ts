@@ -1,5 +1,9 @@
 
-type Shape = Point[];
+type Shape = {
+  points: Point[],
+  color: [number, number, number],
+};
+
 type Translation = {
   x: number;
   y: number;
@@ -8,10 +12,17 @@ type Translation = {
 
 function translateShape(shape: Shape, translation: Point): Shape {
   // Translate the shape by the given translation vector
-  return shape.map(point => ({
+  shape.points = shape.points.map(point => ({
     x: point.x + translation.x,
     y: point.y + translation.y,
   }));
+  return {
+    points: shape.points.map(point => ({
+      x: point.x + translation.x,
+      y: point.y + translation.y,
+    })),
+    color: shape.color,
+  };
 }
 
 type TessellationTranslation = {
@@ -72,17 +83,18 @@ function drawTesselation(tessellation: Tessellation, startCoord: Point) {
   }
 }*/
 
-
-
 const TESSELLATIONS: Record<string, Tessellation> = {
   DEFAULT: {
     unit: [
-      [
-        { x: 0, y: 0 },
-        { x: 100, y: 0 },
-        { x: 100, y: 100 },
-        { x: 0, y: 100 },
-      ]
+      {
+        points: [
+          { x: 0, y: 0 },
+          { x: 100, y: 0 },
+          { x: 100, y: 100 },
+          { x: 0, y: 100 },
+        ],
+        color: [255, 0, 0],
+      }
     ],
     translationsX: {
       translation: { x: 100, y: 0, angle: 0 },
@@ -93,6 +105,7 @@ const TESSELLATIONS: Record<string, Tessellation> = {
       numUnits: 10,
     },
   },
+  /*
   TRIANGLE: {
     unit: [
       [
@@ -294,5 +307,5 @@ const TESSELLATIONS: Record<string, Tessellation> = {
       translation: { x: 50 + 50 * Math.sqrt(3), y: 150 + 50 * Math.sqrt(3), angle: 0 },
       numUnits: 10,
     },
-  },
+  },*/
 }

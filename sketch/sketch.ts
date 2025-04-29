@@ -31,7 +31,6 @@ function draw() {
   // fill(255, 0, 0);
   // drawShape(shape);
 
-  fill(255, 0, 0);
   stroke(0, 0, 0);
-  drawTesselation(TESSELLATIONS.SEMI_REGULAR_SURROUNDED_HEXAGON, { x: 50, y: 50 });
+  drawTesselation(TESSELLATIONS.DEFAULT, { x: 50, y: 50 });
 }
