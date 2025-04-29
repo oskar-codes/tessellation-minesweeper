@@ -21,16 +21,6 @@ function windowResized() {
 function draw() {
   background(image_lebron, 150);
 
-  // const shape = [
-  //   { x: 100, y: 100 },
-  //   { x: 300, y: 100 },
-  //   { x: 200, y: 200 },
-  //   { x: 100, y: 200 },
-  // ]
-  // stroke(0, 0, 0);
-  // fill(255, 0, 0);
-  // drawShape(shape);
-
   stroke(0, 0, 0);
-  drawTesselation(TESSELLATIONS.DEFAULT, { x: 50, y: 50 });
+  drawTesselation(TESSELLATIONS.SEMI_REGULAR_SURROUNDED_HEXAGON, { x: 50, y: 50 });
 }

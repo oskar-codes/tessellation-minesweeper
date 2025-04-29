@@ -12,10 +12,6 @@ type Translation = {
 
 function translateShape(shape: Shape, translation: Point): Shape {
   // Translate the shape by the given translation vector
-  shape.points = shape.points.map(point => ({
-    x: point.x + translation.x,
-    y: point.y + translation.y,
-  }));
   return {
     points: shape.points.map(point => ({
       x: point.x + translation.x,
@@ -105,19 +101,24 @@ const TESSELLATIONS: Record<string, Tessellation> = {
       numUnits: 10,
     },
   },
-  /*
   TRIANGLE: {
     unit: [
-      [
-        { x: 0, y: 0 },
-        { x: 100, y: 0 },
-        { x: 50, y:50 * Math.sqrt(3) },
-      ],
-      [
-        { x: 100, y: 0 },
-        { x: 150, y: 50 * Math.sqrt(3) },
-        { x: 50, y: 50 * Math.sqrt(3) },
-      ],
+      {
+        points: [
+          { x: 0, y: 0 },
+          { x: 100, y: 0 },
+          { x: 50, y:50 * Math.sqrt(3) },
+        ],
+        color: [0, 255, 0],
+      },
+      {
+        points: [
+          { x: 100, y: 0 },
+          { x: 150, y: 50 * Math.sqrt(3) },
+          { x: 50, y: 50 * Math.sqrt(3) },
+        ],
+        color: [0, 0, 255],
+      }
     ],
     translationsX: {
       translation: { x: 100, y: 0, angle: 0 },
@@ -130,14 +131,17 @@ const TESSELLATIONS: Record<string, Tessellation> = {
   },
   HEXAGON: {
     unit: [
-      [
-        { x: -100, y: 0 },
-        { x: -50, y: -50 * Math.sqrt(3) },
-        { x: 50, y: -50 * Math.sqrt(3) },
-        { x: 100, y: 0 },
-        { x: 50, y: 50 * Math.sqrt(3) },
-        { x: -50, y: 50 * Math.sqrt(3) }
-      ],
+      {
+        points: [
+          { x: -100, y: 0 },
+          { x: -50, y: -50 * Math.sqrt(3) },
+          { x: 50, y: -50 * Math.sqrt(3) },
+          { x: 100, y: 0 },
+          { x: 50, y: 50 * Math.sqrt(3) },
+          { x: -50, y: 50 * Math.sqrt(3) }
+        ],
+        color: [255, 0, 0],
+      }
     ],
     translationsX: {
       translation: { x: 150, y: 50 * Math.sqrt(3), angle: 0 },
@@ -150,24 +154,33 @@ const TESSELLATIONS: Record<string, Tessellation> = {
   },
   SEMI_REGULAR_HEX_TRIANGLE: {
     unit: [
-      [
-        { x: 0, y: 0 },
-        { x: 50, y: -50 * Math.sqrt(3) },
-        { x: 150, y: -50 * Math.sqrt(3) },
-        { x: 200, y: 0 },
-        { x: 150, y: 50 * Math.sqrt(3) },
-        { x: 50, y: 50 * Math.sqrt(3) }
-      ],
-      [
-        { x: 150, y: -50 * Math.sqrt(3) },
-        { x: 250, y: -50 * Math.sqrt(3) },
-        { x: 200, y: 0 },
-      ],
-      [
-        { x: 150, y: 50 * Math.sqrt(3) },
-        { x: 250, y: 50 * Math.sqrt(3) },
-        { x: 200, y: 0 },
-      ]
+      {
+        points: [
+          { x: 0, y: 0 },
+          { x: 50, y: -50 * Math.sqrt(3) },
+          { x: 150, y: -50 * Math.sqrt(3) },
+          { x: 200, y: 0 },
+          { x: 150, y: 50 * Math.sqrt(3) },
+          { x: 50, y: 50 * Math.sqrt(3) }
+        ],
+        color: [255, 0, 0],
+      },
+      {
+        points: [
+          { x: 150, y: -50 * Math.sqrt(3) },
+          { x: 250, y: -50 * Math.sqrt(3) },
+          { x: 200, y: 0 },
+        ],
+        color: [0, 255, 0],
+      }
+      {
+        points: [
+          { x: 150, y: 50 * Math.sqrt(3) },
+          { x: 250, y: 50 * Math.sqrt(3) },
+          { x: 200, y: 0 },
+        ],
+        color: [0, 0, 255],
+      }
     ],
     translationsX: {
       translation: { x: 200, y: 0, angle: 0 },
@@ -180,22 +193,28 @@ const TESSELLATIONS: Record<string, Tessellation> = {
   },
   SEMI_REGULAR_OCTOGON_SQUARE: {
     unit: [
-      [
-        { x: 0, y: 0 },
-        { x: 50 * Math.sqrt(2), y: -50 * Math.sqrt(2) },
-        { x: 100 + 50 * Math.sqrt(2), y: -50 * Math.sqrt(2) },
-        { x: 100 + 100 * Math.sqrt(2), y: 0 },
-        { x: 100 + 100 * Math.sqrt(2), y: 100 },
-        { x: 100 + 50 * Math.sqrt(2), y: 100 + 50 * Math.sqrt(2) },
-        { x: 50 * Math.sqrt(2), y: 100 + 50 * Math.sqrt(2) },
-        { x: 0, y: 100 },
-      ],
-      [
-        { x: 100 + 100 * Math.sqrt(2), y: 0 },
-        { x: 200 + 100 * Math.sqrt(2), y: 0 },
-        { x: 200 + 100 * Math.sqrt(2), y: 100 },
-        { x: 100 + 100 * Math.sqrt(2), y: 100 },
-      ],
+      {
+        points: [
+          { x: 0, y: 0 },
+          { x: 50 * Math.sqrt(2), y: -50 * Math.sqrt(2) },
+          { x: 100 + 50 * Math.sqrt(2), y: -50 * Math.sqrt(2) },
+          { x: 100 + 100 * Math.sqrt(2), y: 0 },
+          { x: 100 + 100 * Math.sqrt(2), y: 100 },
+          { x: 100 + 50 * Math.sqrt(2), y: 100 + 50 * Math.sqrt(2) },
+          { x: 50 * Math.sqrt(2), y: 100 + 50 * Math.sqrt(2) },
+          { x: 0, y: 100 },
+        ],
+        color: [255, 0, 0],
+      }
+      {
+        points: [
+          { x: 100 + 100 * Math.sqrt(2), y: 0 },
+          { x: 200 + 100 * Math.sqrt(2), y: 0 },
+          { x: 200 + 100 * Math.sqrt(2), y: 100 },
+          { x: 100 + 100 * Math.sqrt(2), y: 100 },
+        ],
+        color: [0, 255, 0],
+      }
     ],
     translationsX: {
       translation: { x: 100 + 50 * Math.sqrt(2), y: -(100 + 50 * Math.sqrt(2)), angle: 0 },
@@ -208,18 +227,24 @@ const TESSELLATIONS: Record<string, Tessellation> = {
   },
   SEMI_REGULAR_TWO_DIFF_SQUARES: {
     unit: [
-      [
-        { x: 0, y: 0 },
-        { x: 200, y: 0 },
-        { x: 200, y: 200 },
-        { x: 0, y: 200 },
-      ],
-      [
-        { x: 200, y: 0 },
-        { x: 300, y: 0 },
-        { x: 300, y: 100 },
-        { x: 200, y: 100 },
-      ]
+      {
+        points: [
+          { x: 0, y: 0 },
+          { x: 200, y: 0 },
+          { x: 200, y: 200 },
+          { x: 0, y: 200 },
+        ],
+        color: [255, 0, 0],
+      },
+      {
+        points: [
+          { x: 200, y: 0 },
+          { x: 300, y: 0 },
+          { x: 300, y: 100 },
+          { x: 200, y: 100 },
+        ],
+        color: [0, 255, 0],
+      }
     ],
     translationsX: {
       translation: { x: 100, y: -200, angle: 0 },
@@ -232,24 +257,33 @@ const TESSELLATIONS: Record<string, Tessellation> = {
   },
   SEMI_REGULAR_HEX_TRIANGLES_NON_E2E: {
     unit: [
-      [
-        { x: 0, y: 0 },
-        { x: 100, y: -100 * Math.sqrt(3) },
-        { x: 300, y: -100 * Math.sqrt(3) },
-        { x: 400, y: 0 },
-        { x: 300, y: 100 * Math.sqrt(3) },
-        { x: 100, y: 100 * Math.sqrt(3) }
-      ],
-      [
-        { x: 300, y: -100 * Math.sqrt(3) },
-        { x: 400, y: -100 * Math.sqrt(3) },
-        { x: 350, y: -50 * Math.sqrt(3) },
-      ],
-      [
-        { x: 400, y: 0 },
-        { x: 450, y: 50 * Math.sqrt(3) },
-        { x: 350, y: 50 * Math.sqrt(3) },
-      ]
+      {
+        points: [
+          { x: 0, y: 0 },
+          { x: 100, y: -100 * Math.sqrt(3) },
+          { x: 300, y: -100 * Math.sqrt(3) },
+          { x: 400, y: 0 },
+          { x: 300, y: 100 * Math.sqrt(3) },
+          { x: 100, y: 100 * Math.sqrt(3) }
+        ],
+        color: [255, 0, 0],
+      }
+      {
+        points: [
+          { x: 300, y: -100 * Math.sqrt(3) },
+          { x: 400, y: -100 * Math.sqrt(3) },
+          { x: 350, y: -50 * Math.sqrt(3) },
+        ],
+        color: [0, 255, 0],
+      },
+      {
+        points: [
+          { x: 400, y: 0 },
+          { x: 450, y: 50 * Math.sqrt(3) },
+          { x: 350, y: 50 * Math.sqrt(3) },
+        ],
+        color: [0, 0, 255],
+      }
     ],
     translationsX: {
       translation: { x: 100, y: -200 * Math.sqrt(3), angle: 0 },
@@ -262,42 +296,60 @@ const TESSELLATIONS: Record<string, Tessellation> = {
   },
   SEMI_REGULAR_SURROUNDED_HEXAGON: {
     unit: [
-      [
-        { x: 0, y: 0 },
-        { x: 100, y: 0 },
-        { x: 100, y: 100 },
-        { x: 0, y: 100 },
-      ],
-      [
-        { x: 100, y: 100 },
-        { x: 0, y: 100 },
-        { x: 50, y: 100 + 50 * Math.sqrt(3) },
-      ],
-      [
-        { x: 100, y: 100 },
-        { x: 50, y: 100 + 50 * Math.sqrt(3) },
-        { x: 50 + 50 * Math.sqrt(3), y: 150 + 50 * Math.sqrt(3) },
-        { x: 100 + 50 * Math.sqrt(3), y: 150 },
-      ],
-      [
-        { x: 50 + 50 * Math.sqrt(3), y: 150 + 50 * Math.sqrt(3) },
-        { x: 100 + 50 * Math.sqrt(3), y: 150 },
-        { x: 150 + 50 * Math.sqrt(3), y: 150 + 50 * Math.sqrt(3) },
-      ],
-      [
-        { x: 100 + 50 * Math.sqrt(3), y: 150 },
-        { x: 150 + 50 * Math.sqrt(3), y: 150 + 50 * Math.sqrt(3) },
-        { x: 150 + 100 * Math.sqrt(3), y: 100 + 50 * Math.sqrt(3) },
-        { x: 100 + 100 * Math.sqrt(3), y: 100 },
-      ],
-      [
-        { x: 100, y: 0 },
-        { x: 100, y: 100 },
-        { x: 100 + 50 * Math.sqrt(3), y: 150 },
-        { x: 100 + 100 * Math.sqrt(3), y: 100 },
-        { x: 100 + 100 * Math.sqrt(3), y: 0 },
-        { x: 100 + 50 * Math.sqrt(3), y: -50 }
-      ]
+      {
+        points: [
+          { x: 0, y: 0 },
+          { x: 100, y: 0 },
+          { x: 100, y: 100 },
+          { x: 0, y: 100 },
+        ],
+        color: [255, 0, 0],
+      },
+      {
+        points: [
+          { x: 100, y: 100 },
+          { x: 0, y: 100 },
+          { x: 50, y: 100 + 50 * Math.sqrt(3) },
+        ],
+        color: [0, 255, 0],
+      },
+      {
+        points: [
+          { x: 100, y: 100 },
+          { x: 50, y: 100 + 50 * Math.sqrt(3) },
+          { x: 50 + 50 * Math.sqrt(3), y: 150 + 50 * Math.sqrt(3) },
+          { x: 100 + 50 * Math.sqrt(3), y: 150 },
+        ],
+        color: [0, 0, 255],
+      },
+      {
+        points: [
+          { x: 50 + 50 * Math.sqrt(3), y: 150 + 50 * Math.sqrt(3) },
+          { x: 100 + 50 * Math.sqrt(3), y: 150 },
+          { x: 150 + 50 * Math.sqrt(3), y: 150 + 50 * Math.sqrt(3) },
+        ],
+        color: [255, 255, 0],
+      },
+      {
+        points: [
+          { x: 100 + 50 * Math.sqrt(3), y: 150 },
+          { x: 150 + 50 * Math.sqrt(3), y: 150 + 50 * Math.sqrt(3) },
+          { x: 150 + 100 * Math.sqrt(3), y: 100 + 50 * Math.sqrt(3) },
+          { x: 100 + 100 * Math.sqrt(3), y: 100 },
+        ],
+        color: [0, 255, 255],
+      },
+      {
+        points: [
+          { x: 100, y: 0 },
+          { x: 100, y: 100 },
+          { x: 100 + 50 * Math.sqrt(3), y: 150 },
+          { x: 100 + 100 * Math.sqrt(3), y: 100 },
+          { x: 100 + 100 * Math.sqrt(3), y: 0 },
+          { x: 100 + 50 * Math.sqrt(3), y: -50 }
+        ],
+        color: [255, 0, 255],
+      }
     ],
     translationsX: {
       translation: { x: 100 + 100 * Math.sqrt(3), y: 0, angle: 0 },
@@ -307,5 +359,5 @@ const TESSELLATIONS: Record<string, Tessellation> = {
       translation: { x: 50 + 50 * Math.sqrt(3), y: 150 + 50 * Math.sqrt(3), angle: 0 },
       numUnits: 10,
     },
-  },*/
+  },
 }
