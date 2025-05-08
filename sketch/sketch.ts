@@ -25,6 +25,11 @@ function setup() {
   createCanvas(windowWidth, windowHeight)
   rectMode(CENTER).noFill().frameRate(30);
 
+  // Prevent context menu on canvas
+  document.querySelector('canvas')?.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+  });
+
   // Initialize a Minesweeper board in intermediate mode by default
   board = new MinesweeperBoard(
     TESSELLATIONS.HEXAGONE_SQUARE_TRIANGLE_2_REG,

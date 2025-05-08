@@ -787,10 +787,14 @@ var easyButton;
 var intermediateButton;
 var hardButton;
 function setup() {
+    var _a;
     console.log("🚀 - Setup initialized - P5 is running");
     image_lebron = loadImage("resources/lebronjames.jpeg");
     createCanvas(windowWidth, windowHeight);
     rectMode(CENTER).noFill().frameRate(30);
+    (_a = document.querySelector('canvas')) === null || _a === void 0 ? void 0 : _a.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
+    });
     board = new MinesweeperBoard(TESSELLATIONS.HEXAGONE_SQUARE_TRIANGLE_2_REG, { x: 0, y: 0 }, 3, 3, 12, 0.5);
     difficultyButtonArea = createDiv('');
     difficultyButtonArea.position(width - 200, 20);
