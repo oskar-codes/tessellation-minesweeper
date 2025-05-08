@@ -57,27 +57,7 @@ function drawTesselation(tessellation: Tessellation, startCoord: Point) {
       }
     }
   }
-
-  
-
-
 }
-
-/*function drawUnit(tessellation: Tessellation, drawnUnits: number, coords: Point) {
-  for (const unit of tessellation.unit) {
-    drawShape(translateShape(unit, coords));
-  }
-
-  if (drawnUnits < tessellation.numUnits) {
-    for (const translation of tessellation.translations) {
-      const newCoords = {
-        x: coords.x + translation.x,
-        y: coords.y + translation.y,
-      };
-      drawUnit(tessellation, drawnUnits + tessellation.translations.length, newCoords);
-    }
-  }
-}*/
 
 const TESSELLATIONS: Record<string, Tessellation> = {
   DEFAULT: {
@@ -107,7 +87,7 @@ const TESSELLATIONS: Record<string, Tessellation> = {
         points: [
           { x: 0, y: 0 },
           { x: 100, y: 0 },
-          { x: 50, y:50 * Math.sqrt(3) },
+          { x: 50, y: 50 * Math.sqrt(3) },
         ],
         color: [0, 255, 0],
       },
@@ -172,7 +152,7 @@ const TESSELLATIONS: Record<string, Tessellation> = {
           { x: 200, y: 0 },
         ],
         color: [0, 255, 0],
-      }
+      },
       {
         points: [
           { x: 150, y: 50 * Math.sqrt(3) },
@@ -205,7 +185,7 @@ const TESSELLATIONS: Record<string, Tessellation> = {
           { x: 0, y: 100 },
         ],
         color: [255, 0, 0],
-      }
+      },
       {
         points: [
           { x: 100 + 100 * Math.sqrt(2), y: 0 },
@@ -267,7 +247,7 @@ const TESSELLATIONS: Record<string, Tessellation> = {
           { x: 100, y: 100 * Math.sqrt(3) }
         ],
         color: [255, 0, 0],
-      }
+      },
       {
         points: [
           { x: 300, y: -100 * Math.sqrt(3) },
@@ -357,6 +337,180 @@ const TESSELLATIONS: Record<string, Tessellation> = {
     },
     translationsY: {
       translation: { x: 50 + 50 * Math.sqrt(3), y: 150 + 50 * Math.sqrt(3), angle: 0 },
+      numUnits: 10,
+    },
+  },
+  HEXAGONE_SQUARE_TRIANGLE_2_REG: {
+    unit: [
+      {
+        points: [
+          { x: 0, y: 0 },
+          { x: 100, y: 0 },
+          { x: 100, y: 100 },
+          { x: 0, y: 100 },
+        ],
+        color: [255, 0, 0],
+      },
+      {
+        points: [
+          { x: 0, y: 100 },
+          { x: 100, y: 100 },
+          { x: 150, y: 100 + 50 * Math.sqrt(3) },
+          { x: 100, y: 100 + 100 * Math.sqrt(3) },
+          { x: 0, y: 100 + 100 * Math.sqrt(3) },
+          { x: -50, y: 100 + 50 * Math.sqrt(3) }
+        ],
+        color: [0, 255, 0],
+      },
+      {
+        points: [
+          { x: 100, y: 100 + 100 * Math.sqrt(3) },
+          { x: 150, y: 100 + 50 * Math.sqrt(3) },
+          { x: 150 + 50 * Math.sqrt(3), y: 150 + 50 * Math.sqrt(3) },
+          { x: 100 + 50 * Math.sqrt(3), y: 150 + 100 * Math.sqrt(3) },
+        ],
+        color: [255, 0, 0],
+      },
+      {
+        points: [
+          { x: 100 + 50 * Math.sqrt(3), y: 150 + 100 * Math.sqrt(3) },
+          { x: 150 + 50 * Math.sqrt(3), y: 150 + 50 * Math.sqrt(3) },
+          { x: 250 + 50 * Math.sqrt(3), y: 150 + 50 * Math.sqrt(3) },
+          { x: 300 + 50 * Math.sqrt(3), y: 150 + 100 * Math.sqrt(3) },
+          { x: 250 + 50 * Math.sqrt(3), y: 150 + 150 * Math.sqrt(3) },
+          { x: 150 + 50 * Math.sqrt(3), y: 150 + 150 * Math.sqrt(3) }
+        ],
+        color: [0, 255, 0],
+      },
+      {
+        points: [
+          { x: 300 + 50 * Math.sqrt(3), y: 150 + 100 * Math.sqrt(3) },
+          { x: 250 + 50 * Math.sqrt(3), y: 150 + 50 * Math.sqrt(3) },
+          { x: 250 + 100 * Math.sqrt(3), y: 100 + 50 * Math.sqrt(3) },
+          { x: 300 + 100 * Math.sqrt(3), y: 100 + 100 * Math.sqrt(3) },
+        ],
+        color: [255, 0, 0],
+      },
+      {
+        points: [
+          { x: 100, y: 0 },
+          { x: 200, y: 0 },
+          { x: 200, y: 100 },
+          { x: 100, y: 100 },
+        ],
+        color: [0, 0, 255],
+      },
+      {
+        points: [
+          { x: 100, y: 100 },
+          { x: 200, y: 100 },
+          { x: 150, y: 100 + 50 * Math.sqrt(3) },
+        ],
+        color: [255, 255, 0],
+      },
+      {
+        points: [
+          { x: 150, y: 100 + 50 * Math.sqrt(3) },
+          { x: 200, y: 100 },
+          { x: 200 + 50 * Math.sqrt(3), y: 150 },
+          { x: 150 + 50 * Math.sqrt(3), y: 150 + 50 * Math.sqrt(3) },
+        ],
+        color: [0, 0, 255],
+      },
+      {
+        points: [
+          { x: 200 + 50 * Math.sqrt(3), y: 150 },
+          { x: 150 + 50 * Math.sqrt(3), y: 150 + 50 * Math.sqrt(3) },
+          { x: 250 + 50 * Math.sqrt(3), y: 150 + 50 * Math.sqrt(3) },
+        ],
+        color: [255, 255, 0],
+      },
+      {
+        points: [
+          { x: 250 + 50 * Math.sqrt(3), y: 150 + 50 * Math.sqrt(3) },
+          { x: 200 + 50 * Math.sqrt(3), y: 150 },
+          { x: 200 + 100 * Math.sqrt(3), y: 100 },
+          { x: 250 + 100 * Math.sqrt(3), y: 100 + 50 * Math.sqrt(3) },
+        ],
+        color: [0, 0, 255],
+      },
+      {
+        points: [
+          { x: 200 + 100 * Math.sqrt(3), y: 100 },
+          { x: 250 + 100 * Math.sqrt(3), y: 100 + 50 * Math.sqrt(3) },
+          { x: 300 + 100 * Math.sqrt(3), y: 100 },
+        ],
+        color: [255, 255, 0],
+      },
+      {
+        points: [
+          { x: 200 + 100 * Math.sqrt(3), y: 100 },
+          { x: 300 + 100 * Math.sqrt(3), y: 100 },
+          { x: 300 + 100 * Math.sqrt(3), y: 0 },
+          { x: 200 + 100 * Math.sqrt(3), y: 0 },
+        ],
+        color: [0, 0, 255],
+      },
+      {
+        points: [
+          { x: 300 + 100 * Math.sqrt(3), y: 0 },
+          { x: 200 + 100 * Math.sqrt(3), y: 0 },
+          { x: 250 + 100 * Math.sqrt(3), y: -50 * Math.sqrt(3) },
+        ],
+        color: [255, 255, 0],
+      },
+      {
+        points: [
+          { x: 200 + 100 * Math.sqrt(3), y: 0 },
+          { x: 250 + 100 * Math.sqrt(3), y: -50 * Math.sqrt(3) },
+          { x: 250 + 50 * Math.sqrt(3), y: -50 - 50 * Math.sqrt(3) },
+          { x: 200 + 50 * Math.sqrt(3), y: -50 },
+        ],
+        color: [0, 0, 255],
+      },
+      {
+        points: [
+          { x: 250 + 50 * Math.sqrt(3), y: -50 - 50 * Math.sqrt(3) },
+          { x: 200 + 50 * Math.sqrt(3), y: -50 },
+          { x: 150 + 50 * Math.sqrt(3), y: -50 - 50 * Math.sqrt(3) },
+        ],
+        color: [255, 255, 0],
+      },
+      {
+        points: [
+          { x: 200 + 50 * Math.sqrt(3), y: -50 },
+          { x: 150 + 50 * Math.sqrt(3), y: -50 - 50 * Math.sqrt(3) },
+          { x: 150, y: - 50 * Math.sqrt(3) },
+          { x: 200, y: 0 },
+        ],
+        color: [0, 0, 255],
+      },
+      {
+        points: [
+          { x: 150, y: - 50 * Math.sqrt(3) },
+          { x: 200, y: 0 },
+          { x: 100, y: 0 },
+        ],
+        color: [255, 255, 0],
+      },
+      {
+        points: [
+          { x: 200, y: 0 },
+          { x: 200, y: 100 },
+          { x: 200 + 50 * Math.sqrt(3), y: 150 },
+          { x: 200 + 100 * Math.sqrt(3), y: 100 },
+          { x: 200 + 100 * Math.sqrt(3), y: 0 },
+          { x: 200 + 50 * Math.sqrt(3), y: -50 }
+        ],
+        color: [0, 255, 255],
+      }
+    ],
+    translationsX: {
+      translation: { x: 300 + 100 * Math.sqrt(3), y: 0, angle: 0 },
+      numUnits: 10,
+    },
+    translationsY: {
+      translation: { x: 150 + 50 * Math.sqrt(3), y: 150 + 150 * Math.sqrt(3), angle: 0 },
       numUnits: 10,
     },
   },
