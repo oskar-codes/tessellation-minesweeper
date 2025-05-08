@@ -1,4 +1,3 @@
-
 type Shape = {
   points: Point[],
   color: [number, number, number],
@@ -514,4 +513,13 @@ const TESSELLATIONS: Record<string, Tessellation> = {
       numUnits: 10,
     },
   },
+}
+
+declare interface Tile {
+  id: number;
+  shape: Shape;
+  state: 'hidden' | 'revealed' | 'flagged';
+  isMine: boolean;
+  neighborMineCount: number;
+  neighbors: number[];
 }
