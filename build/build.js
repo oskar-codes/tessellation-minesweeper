@@ -786,6 +786,7 @@ var difficultyButtonArea;
 var easyButton;
 var intermediateButton;
 var hardButton;
+var tessellation = TESSELLATIONS.HEXAGONE_SQUARE_TRIANGLE_2_REG;
 function setup() {
     var _a;
     console.log("🚀 - Setup initialized - P5 is running");
@@ -795,7 +796,7 @@ function setup() {
     (_a = document.querySelector('canvas')) === null || _a === void 0 ? void 0 : _a.addEventListener('contextmenu', function (e) {
         e.preventDefault();
     });
-    board = new MinesweeperBoard(TESSELLATIONS.HEXAGONE_SQUARE_TRIANGLE_2_REG, { x: 0, y: 0 }, 3, 3, 12, 0.5);
+    board = new MinesweeperBoard(tessellation, { x: 0, y: 0 }, 3, 3, 12, 0.5);
     difficultyButtonArea = createDiv('');
     difficultyButtonArea.position(width - 200, 20);
     difficultyButtonArea.style('background-color', 'rgba(255, 255, 255, 0.8)');
@@ -898,7 +899,7 @@ function pointInPolygon(point, vs) {
     return inside;
 }
 function resetGame(numUnitsX, numUnitsY, mineCount) {
-    board = new MinesweeperBoard(TESSELLATIONS.HEXAGONE_SQUARE_TRIANGLE_2_REG, { x: 0, y: 0 }, numUnitsX, numUnitsY, mineCount, 0.5);
+    board = new MinesweeperBoard(tessellation, { x: 0, y: 0 }, numUnitsX, numUnitsY, mineCount, 0.5);
     playAgainButton.hide();
 }
 //# sourceMappingURL=build.js.map

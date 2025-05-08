@@ -16,6 +16,8 @@ let easyButton: p5.Element;
 let intermediateButton: p5.Element;
 let hardButton: p5.Element;
 
+const tessellation = TESSELLATIONS.HEXAGONE_SQUARE_TRIANGLE_2_REG;
+
 // Ran once
 function setup() {
   console.log("🚀 - Setup initialized - P5 is running");
@@ -32,7 +34,7 @@ function setup() {
 
   // Initialize a Minesweeper board in intermediate mode by default
   board = new MinesweeperBoard(
-    TESSELLATIONS.HEXAGONE_SQUARE_TRIANGLE_2_REG,
+    tessellation,
     { x: 0, y: 0 },
     3, 3,
     12,
@@ -160,7 +162,7 @@ function pointInPolygon(point: Point, vs: Point[]): boolean {
 // Reset the game with specified board size and mine count
 function resetGame(numUnitsX: number, numUnitsY: number, mineCount: number) {
   board = new MinesweeperBoard(
-    TESSELLATIONS.HEXAGONE_SQUARE_TRIANGLE_2_REG,
+    tessellation,
     { x: 0, y: 0 },
     numUnitsX, numUnitsY,
     mineCount,
