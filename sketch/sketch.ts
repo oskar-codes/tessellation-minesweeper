@@ -18,6 +18,13 @@ let hardButton: p5.Element;
 
 const tessellation = TESSELLATIONS.HEXAGONE_SQUARE_TRIANGLE_2_REG;
 
+// Track current difficulty settings
+let currentDifficulty = {
+  numUnitsX: 3,
+  numUnitsY: 3,
+  mineCount: 12
+};
+
 // Ran once
 function setup() {
   console.log("🚀 - Setup initialized - P5 is running");
@@ -36,8 +43,9 @@ function setup() {
   board = new MinesweeperBoard(
     tessellation,
     { x: 0, y: 0 },
-    3, 3,
-    12,
+    currentDifficulty.numUnitsX,
+    currentDifficulty.numUnitsY,
+    currentDifficulty.mineCount,
     0.5
   );
 
@@ -57,7 +65,10 @@ function setup() {
   easyButton.style('color', 'white');
   easyButton.style('border', 'none');
   easyButton.style('border-radius', '5px');
-  easyButton.mousePressed(() => resetGame(2, 2, 6));
+  easyButton.mousePressed(() => {
+    currentDifficulty = { numUnitsX: 2, numUnitsY: 2, mineCount: 6 };
+    resetGame(currentDifficulty.numUnitsX, currentDifficulty.numUnitsY, currentDifficulty.mineCount);
+  });
 
   intermediateButton = createButton(Difficulty.INTERMEDIATE);
   intermediateButton.parent(difficultyButtonArea);
@@ -67,7 +78,10 @@ function setup() {
   intermediateButton.style('color', 'black');
   intermediateButton.style('border', 'none');
   intermediateButton.style('border-radius', '5px');
-  intermediateButton.mousePressed(() => resetGame(3, 3, 12));
+  intermediateButton.mousePressed(() => {
+    currentDifficulty = { numUnitsX: 3, numUnitsY: 3, mineCount: 12 };
+    resetGame(currentDifficulty.numUnitsX, currentDifficulty.numUnitsY, currentDifficulty.mineCount);
+  });
 
   hardButton = createButton(Difficulty.HARD);
   hardButton.parent(difficultyButtonArea);
@@ -77,7 +91,10 @@ function setup() {
   hardButton.style('color', 'white');
   hardButton.style('border', 'none');
   hardButton.style('border-radius', '5px');
-  hardButton.mousePressed(() => resetGame(4, 4, 20));
+  hardButton.mousePressed(() => {
+    currentDifficulty = { numUnitsX: 4, numUnitsY: 4, mineCount: 20 };
+    resetGame(currentDifficulty.numUnitsX, currentDifficulty.numUnitsY, currentDifficulty.mineCount);
+  });
 
   // Create a button area for the 'Play Again' button in the bottom right
   buttonArea = createDiv('');
@@ -95,7 +112,7 @@ function setup() {
   playAgainButton.style('color', 'white');
   playAgainButton.style('border', 'none');
   playAgainButton.style('border-radius', '5px');
-  playAgainButton.mousePressed(() => resetGame(3, 3, 12));
+  playAgainButton.mousePressed(() => resetGame(currentDifficulty.numUnitsX, currentDifficulty.numUnitsY, currentDifficulty.mineCount));
   playAgainButton.hide();
 }
 

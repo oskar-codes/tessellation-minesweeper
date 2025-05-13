@@ -787,6 +787,11 @@ var easyButton;
 var intermediateButton;
 var hardButton;
 var tessellation = TESSELLATIONS.HEXAGONE_SQUARE_TRIANGLE_2_REG;
+var currentDifficulty = {
+    numUnitsX: 3,
+    numUnitsY: 3,
+    mineCount: 12
+};
 function setup() {
     var _a;
     console.log("🚀 - Setup initialized - P5 is running");
@@ -796,7 +801,7 @@ function setup() {
     (_a = document.querySelector('canvas')) === null || _a === void 0 ? void 0 : _a.addEventListener('contextmenu', function (e) {
         e.preventDefault();
     });
-    board = new MinesweeperBoard(tessellation, { x: 0, y: 0 }, 3, 3, 12, 0.5);
+    board = new MinesweeperBoard(tessellation, { x: 0, y: 0 }, currentDifficulty.numUnitsX, currentDifficulty.numUnitsY, currentDifficulty.mineCount, 0.5);
     difficultyButtonArea = createDiv('');
     difficultyButtonArea.position(width - 200, 20);
     difficultyButtonArea.style('background-color', 'rgba(255, 255, 255, 0.8)');
@@ -810,7 +815,10 @@ function setup() {
     easyButton.style('color', 'white');
     easyButton.style('border', 'none');
     easyButton.style('border-radius', '5px');
-    easyButton.mousePressed(function () { return resetGame(2, 2, 6); });
+    easyButton.mousePressed(function () {
+        currentDifficulty = { numUnitsX: 2, numUnitsY: 2, mineCount: 6 };
+        resetGame(currentDifficulty.numUnitsX, currentDifficulty.numUnitsY, currentDifficulty.mineCount);
+    });
     intermediateButton = createButton(Difficulty.INTERMEDIATE);
     intermediateButton.parent(difficultyButtonArea);
     intermediateButton.style('font-size', '16px');
@@ -819,7 +827,10 @@ function setup() {
     intermediateButton.style('color', 'black');
     intermediateButton.style('border', 'none');
     intermediateButton.style('border-radius', '5px');
-    intermediateButton.mousePressed(function () { return resetGame(3, 3, 12); });
+    intermediateButton.mousePressed(function () {
+        currentDifficulty = { numUnitsX: 3, numUnitsY: 3, mineCount: 12 };
+        resetGame(currentDifficulty.numUnitsX, currentDifficulty.numUnitsY, currentDifficulty.mineCount);
+    });
     hardButton = createButton(Difficulty.HARD);
     hardButton.parent(difficultyButtonArea);
     hardButton.style('font-size', '16px');
@@ -828,7 +839,10 @@ function setup() {
     hardButton.style('color', 'white');
     hardButton.style('border', 'none');
     hardButton.style('border-radius', '5px');
-    hardButton.mousePressed(function () { return resetGame(4, 4, 20); });
+    hardButton.mousePressed(function () {
+        currentDifficulty = { numUnitsX: 4, numUnitsY: 4, mineCount: 20 };
+        resetGame(currentDifficulty.numUnitsX, currentDifficulty.numUnitsY, currentDifficulty.mineCount);
+    });
     buttonArea = createDiv('');
     buttonArea.position(width - 200, height - 100);
     buttonArea.style('background-color', 'rgba(255, 255, 255, 0.8)');
@@ -842,7 +856,7 @@ function setup() {
     playAgainButton.style('color', 'white');
     playAgainButton.style('border', 'none');
     playAgainButton.style('border-radius', '5px');
-    playAgainButton.mousePressed(function () { return resetGame(3, 3, 12); });
+    playAgainButton.mousePressed(function () { return resetGame(currentDifficulty.numUnitsX, currentDifficulty.numUnitsY, currentDifficulty.mineCount); });
     playAgainButton.hide();
 }
 function windowResized() {
