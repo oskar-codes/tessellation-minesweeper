@@ -59,8 +59,10 @@ var MinesweeperBoard = (function () {
         this.gameOver = false;
         this.gameWon = false;
         this.minesPlaced = false;
+        this.hoveredTileIndex = null;
         this.mineCount = mineCount;
         this.scale = scale;
+        this.hoveredTileIndex = null;
         this.generateTiles(tessellation, startCoord, numUnitsX, numUnitsY);
         this.centerBoard();
         this.calculateNeighborMineCounts();
@@ -214,6 +216,22 @@ var MinesweeperBoard = (function () {
             tile.neighborMineCount = tile.neighbors.reduce(function (acc, nIdx) { return acc + (_this.tiles[nIdx].isMine ? 1 : 0); }, 0);
         }
     };
+    MinesweeperBoard.prototype.setHoveredTile = function (point) {
+        this.hoveredTileIndex = null;
+        for (var i = 0; i < this.tiles.length; ++i) {
+            if (pointInPolygon(point, this.tiles[i].shape.points)) {
+                this.hoveredTileIndex = i;
+                break;
+            }
+        }
+    };
+    MinesweeperBoard.prototype.isTileHighlighted = function (tileIndex) {
+        if (this.hoveredTileIndex === null)
+            return false;
+        if (tileIndex === this.hoveredTileIndex)
+            return true;
+        return this.tiles[this.hoveredTileIndex].neighbors.includes(tileIndex);
+    };
     return MinesweeperBoard;
 }());
 var PolygonHelper = (function () {
@@ -255,6 +273,7 @@ function drawTile(tile, showMines) {
         fill(180);
     }
     stroke(0);
+    strokeWeight(1);
     beginShape();
     for (var _i = 0, _a = tile.shape.points; _i < _a.length; _i++) {
         var point_2 = _a[_i];
@@ -282,6 +301,19 @@ function drawTile(tile, showMines) {
     else if (showMines && tile.isMine) {
         fill(0);
         ellipse(tile.shape.points.reduce(function (acc, p) { return acc + p.x; }, 0) / tile.shape.points.length, tile.shape.points.reduce(function (acc, p) { return acc + p.y; }, 0) / tile.shape.points.length, 20, 20);
+    }
+}
+function drawTileHighlight(tile) {
+    if (board.isTileHighlighted(tile.id)) {
+        noFill();
+        stroke(0, 0, 255);
+        strokeWeight(2);
+        beginShape();
+        for (var _i = 0, _a = tile.shape.points; _i < _a.length; _i++) {
+            var point_3 = _a[_i];
+            vertex(point_3.x, point_3.y);
+        }
+        endShape(CLOSE);
     }
 }
 function translateShape(shape, translation) {
@@ -866,10 +898,13 @@ function windowResized() {
 }
 function draw() {
     background(image_lebron, 150);
-    stroke(0, 0, 0);
     for (var _i = 0, _a = board.tiles; _i < _a.length; _i++) {
         var tile = _a[_i];
         drawTile(tile, board.gameOver);
+    }
+    for (var _b = 0, _c = board.tiles; _b < _c.length; _b++) {
+        var tile = _c[_b];
+        drawTileHighlight(tile);
     }
     if (board.gameOver) {
         fill(board.gameWon ? 'green' : 'red');
@@ -899,6 +934,11 @@ function mousePressed() {
             break;
         }
     }
+}
+function mouseMoved() {
+    if (board.gameOver)
+        return;
+    board.setHoveredTile({ x: mouseX, y: mouseY });
 }
 function pointInPolygon(point, vs) {
     var inside = false;

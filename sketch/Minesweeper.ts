@@ -19,6 +19,7 @@ class MinesweeperBoard {
   gameWon: boolean = false;
   scale: number;
   minesPlaced: boolean = false;
+  hoveredTileIndex: number | null = null;
 
   constructor(
     tessellation: Tessellation,
@@ -30,6 +31,7 @@ class MinesweeperBoard {
   ) {
     this.mineCount = mineCount;
     this.scale = scale;
+    this.hoveredTileIndex = null;
     this.generateTiles(tessellation, startCoord, numUnitsX, numUnitsY);
     this.centerBoard();
     this.calculateNeighborMineCounts();
@@ -167,5 +169,21 @@ class MinesweeperBoard {
     for (const tile of this.tiles) {
       tile.neighborMineCount = tile.neighbors.reduce((acc, nIdx) => acc + (this.tiles[nIdx].isMine ? 1 : 0), 0);
     }
+  }
+
+  setHoveredTile(point: Point): void {
+    this.hoveredTileIndex = null;
+    for (let i = 0; i < this.tiles.length; ++i) {
+      if (pointInPolygon(point, this.tiles[i].shape.points)) {
+        this.hoveredTileIndex = i;
+        break;
+      }
+    }
+  }
+
+  isTileHighlighted(tileIndex: number): boolean {
+    if (this.hoveredTileIndex === null) return false;
+    if (tileIndex === this.hoveredTileIndex) return true;
+    return this.tiles[this.hoveredTileIndex].neighbors.includes(tileIndex);
   }
 } 

@@ -23,7 +23,10 @@ function drawTile(tile: Tile, showMines: boolean = false) {
   } else {
     fill(180);
   }
+  
+  // Draw base tile
   stroke(0);
+  strokeWeight(1);
   beginShape();
   for (const point of tile.shape.points) {
     vertex(point.x, point.y);
@@ -65,5 +68,19 @@ function drawTile(tile: Tile, showMines: boolean = false) {
       tile.shape.points.reduce((acc, p) => acc + p.y, 0) / tile.shape.points.length,
       20, 20
     );
+  }
+}
+
+// Draw highlight for a tile
+function drawTileHighlight(tile: Tile) {
+  if (board.isTileHighlighted(tile.id)) {
+    noFill();
+    stroke(0, 0, 255); // Blue for highlighted tiles
+    strokeWeight(2);   // Thicker stroke for highlighted tiles
+    beginShape();
+    for (const point of tile.shape.points) {
+      vertex(point.x, point.y);
+    }
+    endShape(CLOSE);
   }
 }

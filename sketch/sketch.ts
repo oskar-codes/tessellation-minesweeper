@@ -126,11 +126,15 @@ function windowResized() {
 // Ran every frame
 function draw() {
   background(image_lebron, 150);
-
-  stroke(0, 0, 0);
-  // Draw all tiles
+  
+  // Draw all tiles first
   for (const tile of board.tiles) {
     drawTile(tile, board.gameOver);
+  }
+  
+  // Draw highlights on top
+  for (const tile of board.tiles) {
+    drawTileHighlight(tile);
   }
 
   // Show win/lose message
@@ -161,6 +165,11 @@ function mousePressed() {
       break;
     }
   }
+}
+
+function mouseMoved() {
+  if (board.gameOver) return;
+  board.setHoveredTile({ x: mouseX, y: mouseY });
 }
 
 // Helper: point-in-polygon test
