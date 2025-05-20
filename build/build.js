@@ -809,6 +809,13 @@ var Difficulty;
     Difficulty["INTERMEDIATE"] = "Intermediate";
     Difficulty["HARD"] = "Hard";
 })(Difficulty || (Difficulty = {}));
+var GameState;
+(function (GameState) {
+    GameState["MAIN_MENU"] = "MAIN_MENU";
+    GameState["LEVEL_SELECT"] = "LEVEL_SELECT";
+    GameState["PLAYING"] = "PLAYING";
+})(GameState || (GameState = {}));
+var currentGameState = GameState.MAIN_MENU;
 var numberOfShapesControl;
 var image_lebron;
 var board;
@@ -818,6 +825,13 @@ var difficultyButtonArea;
 var easyButton;
 var intermediateButton;
 var hardButton;
+var mainMenuArea;
+var startGameButton;
+var levelSelectArea;
+var backToMenuButton;
+var previewGraphics;
+var suppressNextClick = false;
+var previewImg;
 var tessellation = TESSELLATIONS.HEXAGONE_SQUARE_TRIANGLE_2_REG;
 var currentDifficulty = {
     numUnitsX: 3,
@@ -833,12 +847,114 @@ function setup() {
     (_a = document.querySelector('canvas')) === null || _a === void 0 ? void 0 : _a.addEventListener('contextmenu', function (e) {
         e.preventDefault();
     });
-    board = new MinesweeperBoard(tessellation, { x: 0, y: 0 }, currentDifficulty.numUnitsX, currentDifficulty.numUnitsY, currentDifficulty.mineCount, 0.5);
+    mainMenuArea = createDiv('');
+    mainMenuArea.position(width / 2 - 150, height / 2 - 100);
+    mainMenuArea.style('background-color', 'rgba(255, 255, 255, 0.9)');
+    mainMenuArea.style('padding', '20px');
+    mainMenuArea.style('border-radius', '10px');
+    mainMenuArea.style('width', '300px');
+    mainMenuArea.style('text-align', 'center');
+    mainMenuArea.style('z-index', '1000');
+    var title = createElement('h1', 'Tessellationsweeper');
+    title.parent(mainMenuArea);
+    title.style('color', '#333');
+    title.style('margin-bottom', '30px');
+    startGameButton = createButton('Start Game');
+    startGameButton.parent(mainMenuArea);
+    startGameButton.style('font-size', '18px');
+    startGameButton.style('padding', '10px 20px');
+    startGameButton.style('background-color', '#4CAF50');
+    startGameButton.style('color', 'white');
+    startGameButton.style('border', 'none');
+    startGameButton.style('border-radius', '5px');
+    startGameButton.style('margin-bottom', '20px');
+    startGameButton.mousePressed(function () {
+        mainMenuArea.hide();
+        currentGameState = GameState.LEVEL_SELECT;
+        levelSelectArea.show();
+    });
+    levelSelectArea = createDiv('');
+    levelSelectArea.position(width / 2 - 200, height / 2 - 150);
+    levelSelectArea.style('background-color', 'rgba(255, 255, 255, 0.9)');
+    levelSelectArea.style('padding', '20px');
+    levelSelectArea.style('border-radius', '10px');
+    levelSelectArea.style('width', '400px');
+    levelSelectArea.style('text-align', 'center');
+    levelSelectArea.style('z-index', '1000');
+    levelSelectArea.hide();
+    backToMenuButton = createButton('Back to Menu');
+    backToMenuButton.parent(levelSelectArea);
+    backToMenuButton.style('font-size', '16px');
+    backToMenuButton.style('padding', '8px 16px');
+    backToMenuButton.style('background-color', '#666');
+    backToMenuButton.style('color', 'white');
+    backToMenuButton.style('border', 'none');
+    backToMenuButton.style('border-radius', '5px');
+    backToMenuButton.style('margin-bottom', '20px');
+    backToMenuButton.mousePressed(function () {
+        levelSelectArea.hide();
+        mainMenuArea.show();
+        currentGameState = GameState.MAIN_MENU;
+    });
+    var levelCard = createDiv('');
+    levelCard.parent(levelSelectArea);
+    levelCard.style('background-color', 'white');
+    levelCard.style('border-radius', '8px');
+    levelCard.style('padding', '15px');
+    levelCard.style('margin', '10px');
+    levelCard.style('box-shadow', '0 2px 4px rgba(0,0,0,0.1)');
+    levelCard.style('cursor', 'pointer');
+    levelCard.style('transition', 'transform 0.2s');
+    levelCard.mouseOver(function () {
+        levelCard.style('transform', 'scale(1.02)');
+    });
+    levelCard.mouseOut(function () {
+        levelCard.style('transform', 'scale(1)');
+    });
+    levelCard.mousePressed(function () {
+        levelSelectArea.hide();
+        currentGameState = GameState.PLAYING;
+        suppressNextClick = true;
+        initializeGame();
+    });
+    if (previewImg) {
+        previewImg.remove();
+        previewImg = undefined;
+    }
+    previewGraphics = createGraphics(180, 180);
+    previewGraphics.background(255);
+    var previewBoard = new MinesweeperBoard(tessellation, { x: 90, y: 90 }, 2, 2, 0, 0.35);
+    for (var _i = 0, _b = previewBoard.tiles; _i < _b.length; _i++) {
+        var tile = _b[_i];
+        previewGraphics.fill(tile.shape.color);
+        previewGraphics.stroke(0);
+        previewGraphics.strokeWeight(1);
+        previewGraphics.beginShape();
+        for (var _c = 0, _d = tile.shape.points; _c < _d.length; _c++) {
+            var point_4 = _d[_c];
+            previewGraphics.vertex(point_4.x, point_4.y);
+        }
+        previewGraphics.endShape(CLOSE);
+    }
+    previewImg = createImg(previewGraphics.elt.toDataURL(), 'Tessellation Preview');
+    previewImg.parent(levelCard);
+    previewImg.style('display', 'block');
+    previewImg.style('margin', '0 auto 10px auto');
+    previewImg.style('width', '180px');
+    previewImg.style('height', '180px');
+    previewImg.style('background', 'white');
+    previewImg.style('border-radius', '6px');
+    previewImg.style('box-shadow', '0 1px 2px rgba(0,0,0,0.08)');
+    var levelNumber = createElement('h3', 'Level 1');
+    levelNumber.parent(levelCard);
+    levelNumber.style('margin', '10px 0 0 0');
+    levelNumber.style('color', '#333');
     difficultyButtonArea = createDiv('');
     difficultyButtonArea.position(width - 200, 20);
     difficultyButtonArea.style('background-color', 'rgba(255, 255, 255, 0.8)');
     difficultyButtonArea.style('padding', '10px');
     difficultyButtonArea.style('border-radius', '5px');
+    difficultyButtonArea.hide();
     easyButton = createButton(Difficulty.EASY);
     easyButton.parent(difficultyButtonArea);
     easyButton.style('font-size', '16px');
@@ -880,6 +996,7 @@ function setup() {
     buttonArea.style('background-color', 'rgba(255, 255, 255, 0.8)');
     buttonArea.style('padding', '10px');
     buttonArea.style('border-radius', '5px');
+    buttonArea.hide();
     playAgainButton = createButton('Play Again');
     playAgainButton.parent(buttonArea);
     playAgainButton.style('font-size', '18px');
@@ -888,57 +1005,90 @@ function setup() {
     playAgainButton.style('color', 'white');
     playAgainButton.style('border', 'none');
     playAgainButton.style('border-radius', '5px');
-    playAgainButton.mousePressed(function () { return resetGame(currentDifficulty.numUnitsX, currentDifficulty.numUnitsY, currentDifficulty.mineCount); });
+    playAgainButton.mousePressed(function () {
+        resetGame(currentDifficulty.numUnitsX, currentDifficulty.numUnitsY, currentDifficulty.mineCount);
+    });
     playAgainButton.hide();
+}
+function initializeGame() {
+    board = new MinesweeperBoard(tessellation, { x: 0, y: 0 }, currentDifficulty.numUnitsX, currentDifficulty.numUnitsY, currentDifficulty.mineCount, 0.5);
+    difficultyButtonArea.show();
 }
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
+    if (currentGameState === GameState.MAIN_MENU) {
+        mainMenuArea.position(width / 2 - 150, height / 2 - 100);
+    }
     difficultyButtonArea.position(width - 200, 20);
     buttonArea.position(width - 200, height - 100);
 }
 function draw() {
     background(image_lebron, 150);
-    for (var _i = 0, _a = board.tiles; _i < _a.length; _i++) {
-        var tile = _a[_i];
-        drawTile(tile, board.gameOver);
+    if (currentGameState === GameState.LEVEL_SELECT) {
+        var previewContainer = levelSelectArea.elt.querySelector('div');
+        if (previewContainer) {
+            var previewX = previewContainer.offsetLeft + previewContainer.offsetWidth / 2 - 100;
+            var previewY = previewContainer.offsetTop + 50;
+            image(previewGraphics, previewX, previewY);
+        }
     }
-    for (var _b = 0, _c = board.tiles; _b < _c.length; _b++) {
-        var tile = _c[_b];
-        drawTileHighlight(tile);
-    }
-    if (board.gameOver) {
-        fill(board.gameWon ? 'green' : 'red');
-        textAlign(CENTER, CENTER);
-        textSize(32);
-        text(board.gameWon ? 'You Win!' : 'Game Over', width / 2, 40);
-        buttonArea.show();
-        playAgainButton.show();
-    }
-    else {
-        buttonArea.hide();
-        playAgainButton.hide();
+    if (currentGameState === GameState.PLAYING && board) {
+        for (var _i = 0, _a = board.tiles; _i < _a.length; _i++) {
+            var tile = _a[_i];
+            drawTile(tile, board.gameOver);
+        }
+        for (var _b = 0, _c = board.tiles; _b < _c.length; _b++) {
+            var tile = _c[_b];
+            drawTileHighlight(tile);
+        }
+        if (board.gameOver) {
+            fill(board.gameWon ? 'green' : 'red');
+            textAlign(CENTER, CENTER);
+            textSize(32);
+            text(board.gameWon ? 'You Win!' : 'Game Over', width / 2, 40);
+            buttonArea.show();
+            playAgainButton.show();
+        }
+        else {
+            buttonArea.hide();
+            playAgainButton.hide();
+        }
     }
 }
 function mousePressed() {
-    if (board.gameOver)
+    if (suppressNextClick) {
+        suppressNextClick = false;
         return;
-    for (var i = 0; i < board.tiles.length; ++i) {
-        var tile = board.tiles[i];
-        if (pointInPolygon({ x: mouseX, y: mouseY }, tile.shape.points)) {
-            if (mouseButton === LEFT) {
-                board.revealTile(i);
+    }
+    if (currentGameState === GameState.MAIN_MENU || currentGameState === GameState.LEVEL_SELECT) {
+        return;
+    }
+    if (currentGameState === GameState.PLAYING && board) {
+        if (board.gameOver)
+            return;
+        for (var i = 0; i < board.tiles.length; ++i) {
+            var tile = board.tiles[i];
+            if (pointInPolygon({ x: mouseX, y: mouseY }, tile.shape.points)) {
+                if (mouseButton === LEFT) {
+                    board.revealTile(i);
+                }
+                else if (mouseButton === RIGHT) {
+                    board.flagTile(i);
+                }
+                break;
             }
-            else if (mouseButton === RIGHT) {
-                board.flagTile(i);
-            }
-            break;
         }
     }
 }
 function mouseMoved() {
-    if (board.gameOver)
+    if (currentGameState === GameState.MAIN_MENU) {
         return;
-    board.setHoveredTile({ x: mouseX, y: mouseY });
+    }
+    if (currentGameState === GameState.PLAYING) {
+        if (board.gameOver)
+            return;
+        board.setHoveredTile({ x: mouseX, y: mouseY });
+    }
 }
 function pointInPolygon(point, vs) {
     var inside = false;
