@@ -32,12 +32,18 @@ let tessellation = TESSELLATIONS.DEFAULT;
 let levelPreviews: p5.Graphics[] = [];
 let levelPreviewImages: p5.Element[] = [];
 
+type SelectedDifficulty = {
+  numUnitsX: number;
+  numUnitsY: number;
+  scale: number;
+}
+
 // Track current difficulty settings
-let currentDifficulty = {
-  numUnitsX: 3,
-  numUnitsY: 3,
-  mineCount: 12
-};
+let currentDifficulty: SelectedDifficulty = {
+  numUnitsX: tessellation.numUnitsX[1],
+  numUnitsY: tessellation.numUnitsY[1],
+  scale: tessellation.scales[1]
+}
 
 // Ran once
 function setup() {
@@ -124,6 +130,8 @@ function setup() {
       currentGameState = GameState.LEVEL_SELECT;
       difficultyButtonArea.hide();
       levelSelectArea.style('display', 'flex');
+      playAgainButton.hide();
+      buttonArea.hide();
     } else if (currentGameState === GameState.LEVEL_SELECT) {
       levelSelectArea.style('display', 'none');
       mainMenuArea.show();
@@ -164,6 +172,7 @@ function setup() {
       currentGameState = GameState.PLAYING;
       suppressNextClick = true;
       tessellation = ts;
+      currentDifficulty = { numUnitsX: ts.numUnitsX[1], numUnitsY: ts.numUnitsY[1], scale: ts.scales[1] };
       initializeGame();
     });
     // Create a separate graphics buffer for the preview
@@ -175,7 +184,6 @@ function setup() {
       ts,
       { x: 90, y: 90 }, // Center in 180x180
       2, 2, // Small board for preview
-      0,
       0.1 // Slightly larger scale for preview
     );
   
@@ -235,8 +243,9 @@ function setup() {
   easyButton.style('border', 'none');
   easyButton.style('border-radius', '5px');
   easyButton.mousePressed(() => {
-    currentDifficulty = { numUnitsX: 2, numUnitsY: 2, mineCount: 6 };
-    resetGame(currentDifficulty.numUnitsX, currentDifficulty.numUnitsY, currentDifficulty.mineCount);
+    suppressNextClick = true;
+    currentDifficulty = { numUnitsX: tessellation.numUnitsX[0], numUnitsY: tessellation.numUnitsY[0], scale: tessellation.scales[0] };
+    resetGame(currentDifficulty);
   });
 
   intermediateButton = createButton(Difficulty.INTERMEDIATE);
@@ -248,8 +257,9 @@ function setup() {
   intermediateButton.style('border', 'none');
   intermediateButton.style('border-radius', '5px');
   intermediateButton.mousePressed(() => {
-    currentDifficulty = { numUnitsX: 3, numUnitsY: 3, mineCount: 12 };
-    resetGame(currentDifficulty.numUnitsX, currentDifficulty.numUnitsY, currentDifficulty.mineCount);
+    suppressNextClick = true;
+    currentDifficulty = { numUnitsX: tessellation.numUnitsX[1], numUnitsY: tessellation.numUnitsY[1], scale: tessellation.scales[1] };
+    resetGame(currentDifficulty);
   });
 
   hardButton = createButton(Difficulty.HARD);
@@ -261,8 +271,9 @@ function setup() {
   hardButton.style('border', 'none');
   hardButton.style('border-radius', '5px');
   hardButton.mousePressed(() => {
-    currentDifficulty = { numUnitsX: 4, numUnitsY: 4, mineCount: 20 };
-    resetGame(currentDifficulty.numUnitsX, currentDifficulty.numUnitsY, currentDifficulty.mineCount);
+    suppressNextClick = true;
+    currentDifficulty = { numUnitsX: tessellation.numUnitsX[2], numUnitsY: tessellation.numUnitsY[2], scale: tessellation.scales[2] };
+    resetGame(currentDifficulty);
   });
 
   // Create a button area for the 'Play Again' button in the bottom right
@@ -283,7 +294,8 @@ function setup() {
   playAgainButton.style('border', 'none');
   playAgainButton.style('border-radius', '5px');
   playAgainButton.mousePressed(() => {
-    resetGame(currentDifficulty.numUnitsX, currentDifficulty.numUnitsY, currentDifficulty.mineCount);
+    suppressNextClick = true;
+    resetGame(currentDifficulty);
   });
   playAgainButton.hide();
 }
@@ -296,8 +308,7 @@ function initializeGame() {
     { x: 0, y: 0 },
     currentDifficulty.numUnitsX,
     currentDifficulty.numUnitsY,
-    currentDifficulty.mineCount,
-    0.5
+    tessellation.scales[1]
   );
   difficultyButtonArea.show();
 }
@@ -396,13 +407,13 @@ function pointInPolygon(point: Point, vs: Point[]): boolean {
 }
 
 // Reset the game with specified board size and mine count
-function resetGame(numUnitsX: number, numUnitsY: number, mineCount: number) {
+function resetGame(currentDifficulty: SelectedDifficulty) {
   board = new MinesweeperBoard(
     tessellation,
     { x: 0, y: 0 },
-    numUnitsX, numUnitsY,
-    mineCount,
-    0.5
+    currentDifficulty.numUnitsX,
+    currentDifficulty.numUnitsY,
+    currentDifficulty.scale
   );
   playAgainButton.hide();
 }

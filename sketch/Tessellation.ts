@@ -29,6 +29,9 @@ interface Tessellation {
   unit: Shape[];
   translationsX: TessellationTranslation;
   translationsY: TessellationTranslation;
+  numUnitsX: [number, number, number];
+  numUnitsY: [number, number, number];
+  scales: [number, number, number];
 }
 
 function drawTesselation(tessellation: Tessellation, startCoord: Point) {
@@ -79,6 +82,9 @@ const TESSELLATIONS: Record<string, Tessellation> = {
       translation: { x: 0, y: 100, angle: 0 },
       numUnits: 10,
     },
+    numUnitsX: [9, 13, 20],
+    numUnitsY: [9, 13, 20],
+    scales: [0.8, 0.6, 0.4]
   },
   TRIANGLE: {
     unit: [
@@ -107,6 +113,9 @@ const TESSELLATIONS: Record<string, Tessellation> = {
       translation: { x: 50, y: 50 * Math.sqrt(3), angle: 0 },
       numUnits: 10,
     },
+    numUnitsX: [9, 13, 20],
+    numUnitsY: [9, 13, 18],
+    scales: [0.8, 0.6, 0.4]
   },
   HEXAGON: {
     unit: [
@@ -130,6 +139,9 @@ const TESSELLATIONS: Record<string, Tessellation> = {
       translation: { x: 0, y: 100 * Math.sqrt(3), angle: 0 },
       numUnits: 10,
     },
+    numUnitsX: [5, 8, 13],
+    numUnitsY: [5, 8, 13],
+    scales: [0.6, 0.4, 0.25]
   },
   SEMI_REGULAR_HEX_TRIANGLE: {
     unit: [
@@ -169,6 +181,9 @@ const TESSELLATIONS: Record<string, Tessellation> = {
       translation: { x: 100, y: 100 * Math.sqrt(3), angle: 0 },
       numUnits: 10,
     },
+    numUnitsX: [6, 12, 18],
+    numUnitsY: [6, 12, 18],
+    scales: [0.5, 0.3, 0.23]
   },
   SEMI_REGULAR_OCTOGON_SQUARE: {
     unit: [
@@ -203,6 +218,9 @@ const TESSELLATIONS: Record<string, Tessellation> = {
       translation: { x: 100 + 50 * Math.sqrt(2), y: 100 + 50 * Math.sqrt(2), angle: 0 },
       numUnits: 10,
     },
+    numUnitsX: [5, 8, 12],
+    numUnitsY: [5, 8, 12],
+    scales: [0.5, 0.3, 0.23]
   },
   SEMI_REGULAR_TWO_DIFF_SQUARES: {
     unit: [
@@ -241,6 +259,9 @@ const TESSELLATIONS: Record<string, Tessellation> = {
       translation: { x: 200, y: 100, angle: 0 },
       numUnits: 10,
     },
+    numUnitsX: [5, 8, 12],
+    numUnitsY: [5, 8, 12],
+    scales: [0.5, 0.3, 0.23]
   },
   SEMI_REGULAR_HEX_TRIANGLES_NON_E2E: {
     unit: [
@@ -286,6 +307,9 @@ const TESSELLATIONS: Record<string, Tessellation> = {
       translation: { x: 250, y: 150 * Math.sqrt(3), angle: 0 },
       numUnits: 10,
     },
+    numUnitsX: [5, 8, 12],
+    numUnitsY: [5, 8, 12],
+    scales: [0.3, 0.2, 0.13]
   },
   SEMI_REGULAR_SURROUNDED_HEXAGON: {
     unit: [
@@ -352,6 +376,9 @@ const TESSELLATIONS: Record<string, Tessellation> = {
       translation: { x: 50 + 50 * Math.sqrt(3), y: 150 + 50 * Math.sqrt(3), angle: 0 },
       numUnits: 10,
     },
+    numUnitsX: [5, 8, 12],
+    numUnitsY: [5, 8, 12],
+    scales: [0.5, 0.4, 0.26]
   },
   HEXAGONE_SQUARE_TRIANGLE_2_REG: {
     unit: [
@@ -526,6 +553,9 @@ const TESSELLATIONS: Record<string, Tessellation> = {
       translation: { x: 150 + 50 * Math.sqrt(3), y: 150 + 150 * Math.sqrt(3), angle: 0 },
       numUnits: 10,
     },
+    numUnitsX: [3, 5, 7],
+    numUnitsY: [2, 5, 7],
+    scales: [0.8, 0.4, 0.29]
   },
 }
 

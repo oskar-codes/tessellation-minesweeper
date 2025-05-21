@@ -26,13 +26,12 @@ class MinesweeperBoard {
     startCoord: Point,
     numUnitsX: number,
     numUnitsY: number,
-    mineCount: number,
     scale: number = 1
   ) {
-    this.mineCount = mineCount;
     this.scale = scale;
     this.hoveredTileIndex = null;
     this.generateTiles(tessellation, startCoord, numUnitsX, numUnitsY);
+    this.mineCount = Math.floor(this.tiles.length * 0.15); // 15% of tiles are mines
     this.centerBoard();
     this.calculateNeighborMineCounts();
   }
