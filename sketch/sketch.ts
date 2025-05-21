@@ -27,11 +27,10 @@ let mainMenuArea: p5.Element;
 let startGameButton: p5.Element;
 let levelSelectArea: p5.Element;
 let backToMenuButton: p5.Element;
-let previewGraphics: p5.Graphics;
 let suppressNextClick = false;
-let previewImg: p5.Element | undefined;
-
-const tessellation = TESSELLATIONS.HEXAGONE_SQUARE_TRIANGLE_2_REG;
+let tessellation = TESSELLATIONS.DEFAULT;
+let levelPreviews: p5.Graphics[] = [];
+let levelPreviewImages: p5.Element[] = [];
 
 // Track current difficulty settings
 let currentDifficulty = {
@@ -83,23 +82,31 @@ function setup() {
   startGameButton.mousePressed(() => {
     mainMenuArea.hide();
     currentGameState = GameState.LEVEL_SELECT;
-    levelSelectArea.show();
+    levelSelectArea.style('display', 'flex');
+    backToMenuButton.show();
   });
 
   // Create level select area
   levelSelectArea = createDiv('');
-  levelSelectArea.position(width / 2 - 200, height / 2 - 150);
+  levelSelectArea.style('position', 'absolute');
+  levelSelectArea.style('top', '50%');
+  levelSelectArea.style('left', '50%');
+  levelSelectArea.style('transform', 'translate(-50%, -50%)');
   levelSelectArea.style('background-color', 'rgba(255, 255, 255, 0.9)');
   levelSelectArea.style('padding', '20px');
   levelSelectArea.style('border-radius', '10px');
-  levelSelectArea.style('width', '400px');
+  levelSelectArea.style('width', '80%');
   levelSelectArea.style('text-align', 'center');
   levelSelectArea.style('z-index', '1000');
+  levelSelectArea.style('display', 'flex');
+  levelSelectArea.style('flex-direction', 'row');
+  levelSelectArea.style('flex-wrap', 'wrap');
+  levelSelectArea.style('justify-content', 'center');
   levelSelectArea.hide();
 
   // Create back button
   backToMenuButton = createButton('Back to Menu');
-  backToMenuButton.parent(levelSelectArea);
+  backToMenuButton.parent(document.body);
   backToMenuButton.style('font-size', '16px');
   backToMenuButton.style('padding', '8px 16px');
   backToMenuButton.style('background-color', '#666');
@@ -107,82 +114,108 @@ function setup() {
   backToMenuButton.style('border', 'none');
   backToMenuButton.style('border-radius', '5px');
   backToMenuButton.style('margin-bottom', '20px');
+  backToMenuButton.style('position', 'absolute');
+  backToMenuButton.style('top', '20px');
+  backToMenuButton.style('left', '20px');
   backToMenuButton.mousePressed(() => {
-    levelSelectArea.hide();
-    mainMenuArea.show();
-    currentGameState = GameState.MAIN_MENU;
-  });
-
-  // Create level card
-  const levelCard = createDiv('');
-  levelCard.parent(levelSelectArea);
-  levelCard.style('background-color', 'white');
-  levelCard.style('border-radius', '8px');
-  levelCard.style('padding', '15px');
-  levelCard.style('margin', '10px');
-  levelCard.style('box-shadow', '0 2px 4px rgba(0,0,0,0.1)');
-  levelCard.style('cursor', 'pointer');
-  levelCard.style('transition', 'transform 0.2s');
-  levelCard.mouseOver(() => {
-    levelCard.style('transform', 'scale(1.02)');
-  });
-  levelCard.mouseOut(() => {
-    levelCard.style('transform', 'scale(1)');
-  });
-  levelCard.mousePressed(() => {
-    levelSelectArea.hide();
-    currentGameState = GameState.PLAYING;
-    suppressNextClick = true;
-    initializeGame();
-  });
-
-  // Remove any previous preview image if it exists
-  if (previewImg) {
-    previewImg.remove();
-    previewImg = undefined;
-  }
-
-  // Create a separate graphics buffer for the preview
-  previewGraphics = createGraphics(180, 180);
-  previewGraphics.background(255);
-  
-  // Draw the tessellation preview
-  const previewBoard = new MinesweeperBoard(
-    tessellation,
-    { x: 90, y: 90 }, // Center in 180x180
-    2, 2, // Small board for preview
-    0,
-    0.35 // Slightly larger scale for preview
-  );
-
-  // Draw the preview in the graphics buffer
-  for (const tile of previewBoard.tiles) {
-    previewGraphics.fill(tile.shape.color);
-    previewGraphics.stroke(0);
-    previewGraphics.strokeWeight(1);
-    previewGraphics.beginShape();
-    for (const point of tile.shape.points) {
-      previewGraphics.vertex(point.x, point.y);
+    
+    if (currentGameState === GameState.PLAYING) {
+      board = undefined;
+      currentGameState = GameState.LEVEL_SELECT;
+      difficultyButtonArea.hide();
+      levelSelectArea.style('display', 'flex');
+    } else if (currentGameState === GameState.LEVEL_SELECT) {
+      levelSelectArea.style('display', 'none');
+      mainMenuArea.show();
+      currentGameState = GameState.MAIN_MENU;
+      backToMenuButton.hide();
     }
-    previewGraphics.endShape(CLOSE);
+
+  });
+  backToMenuButton.hide();
+
+  
+  // Remove any previous preview image if it exists
+  // if (previewImg) {
+    //   previewImg.remove();
+    //   previewImg = undefined;
+    // }
+  
+  let i = 1;
+  for (const [_, ts] of Object.entries(TESSELLATIONS)) {
+    // Create level card
+    const levelCard = createDiv('');
+    levelCard.parent(levelSelectArea);
+    levelCard.style('background-color', 'white');
+    levelCard.style('border-radius', '8px');
+    levelCard.style('padding', '15px');
+    levelCard.style('margin', '10px');
+    levelCard.style('box-shadow', '0 2px 4px rgba(0,0,0,0.1)');
+    levelCard.style('cursor', 'pointer');
+    levelCard.style('transition', 'transform 0.2s');
+    levelCard.mouseOver(() => {
+      levelCard.style('transform', 'scale(1.02)');
+    });
+    levelCard.mouseOut(() => {
+      levelCard.style('transform', 'scale(1)');
+    });
+    levelCard.mousePressed(() => {
+      levelSelectArea.hide();
+      currentGameState = GameState.PLAYING;
+      suppressNextClick = true;
+      tessellation = ts;
+      initializeGame();
+    });
+    // Create a separate graphics buffer for the preview
+    const pg = createGraphics(180, 180);
+    pg.background(255);
+    
+    // Draw the tessellation preview
+    const board = new MinesweeperBoard(
+      ts,
+      { x: 90, y: 90 }, // Center in 180x180
+      2, 2, // Small board for preview
+      0,
+      0.1 // Slightly larger scale for preview
+    );
+  
+    // Draw the preview in the graphics buffer
+    for (const tile of board.tiles) {
+      pg.fill(220);
+      pg.stroke(0);
+      pg.strokeWeight(1);
+      pg.beginShape();
+      for (const point of tile.shape.points) {
+        pg.vertex(point.x - windowWidth / 2 + 90, point.y - windowHeight / 2 + 90);
+      }
+      pg.endShape(CLOSE);
+    }
+
+    levelPreviews.push(pg);
+    // Convert the graphics buffer to a base64 image and add it to the card
+    const previewImg = createImg((pg.elt as HTMLCanvasElement).toDataURL(), 'Tessellation Preview');
+    previewImg.parent(levelCard);
+    previewImg.style('display', 'block');
+    previewImg.style('margin', '0 auto 10px auto');
+    previewImg.style('width', '180px');
+    previewImg.style('height', '180px');
+    previewImg.style('background', 'white');
+    previewImg.style('border-radius', '6px');
+    previewImg.style('box-shadow', '0 1px 2px rgba(0,0,0,0.08)');
+
+    levelPreviewImages.push(previewImg);
+
+    // Add level number
+    const levelNumber = createElement('h3', `Level ${i}`);
+    levelNumber.parent(levelCard);
+    levelNumber.style('margin', '10px 0 0 0');
+    levelNumber.style('color', '#333');
+
+    i++;
   }
 
-  // Convert the graphics buffer to a base64 image and add it to the card
-  previewImg = createImg((previewGraphics.elt as HTMLCanvasElement).toDataURL(), 'Tessellation Preview');
-  previewImg.parent(levelCard);
-  previewImg.style('display', 'block');
-  previewImg.style('margin', '0 auto 10px auto');
-  previewImg.style('width', '180px');
-  previewImg.style('height', '180px');
-  previewImg.style('background', 'white');
-  previewImg.style('border-radius', '6px');
-  previewImg.style('box-shadow', '0 1px 2px rgba(0,0,0,0.08)');
 
-  // Add level number
-  const levelNumber = createElement('h3', 'Level 1');
-  levelNumber.parent(levelCard);
-  levelNumber.style('margin', '10px 0 0 0');
-  levelNumber.style('color', '#333');
+
 
   // Create a button area for difficulty buttons in the top right
   difficultyButtonArea = createDiv('');
@@ -283,16 +316,6 @@ function windowResized() {
 function draw() {
   // Draw the background image
   background(image_lebron, 150);
-  
-  if (currentGameState === GameState.LEVEL_SELECT) {
-    // Draw the preview in the level card
-    const previewContainer = levelSelectArea.elt.querySelector('div');
-    if (previewContainer) {
-      const previewX = previewContainer.offsetLeft + previewContainer.offsetWidth / 2 - 100;
-      const previewY = previewContainer.offsetTop + 50;
-      image(previewGraphics, previewX, previewY);
-    }
-  }
   
   if (currentGameState === GameState.PLAYING && board) {
     // Draw all tiles first

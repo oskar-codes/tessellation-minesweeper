@@ -76,7 +76,7 @@ const TESSELLATIONS: Record<string, Tessellation> = {
       numUnits: 10,
     },
     translationsY: {
-      translation: { x: 50, y: 100, angle: 0 },
+      translation: { x: 0, y: 100, angle: 0 },
       numUnits: 10,
     },
   },
@@ -209,18 +209,26 @@ const TESSELLATIONS: Record<string, Tessellation> = {
       {
         points: [
           { x: 0, y: 0 },
+          { x: 100, y: 0 },
           { x: 200, y: 0 },
+          { x: 200, y: 100 },
           { x: 200, y: 200 },
+          { x: 100, y: 200 },
           { x: 0, y: 200 },
+          { x: 0, y: 100 },
         ],
         color: [255, 0, 0],
       },
       {
         points: [
           { x: 200, y: 0 },
+          { x: 250, y: 0 },
           { x: 300, y: 0 },
+          { x: 300, y: 50 },
           { x: 300, y: 100 },
+          { x: 250, y: 100 },
           { x: 200, y: 100 },
+          { x: 200, y: 50 },
         ],
         color: [0, 255, 0],
       }
@@ -239,11 +247,17 @@ const TESSELLATIONS: Record<string, Tessellation> = {
       {
         points: [
           { x: 0, y: 0 },
+          { x: 50, y: -50 * Math.sqrt(3) },
           { x: 100, y: -100 * Math.sqrt(3) },
+          { x: 200, y: -100 * Math.sqrt(3) },
           { x: 300, y: -100 * Math.sqrt(3) },
+          { x: 350, y: -50 * Math.sqrt(3) },
           { x: 400, y: 0 },
+          { x: 350, y: 50 * Math.sqrt(3) },
           { x: 300, y: 100 * Math.sqrt(3) },
-          { x: 100, y: 100 * Math.sqrt(3) }
+          { x: 200, y: 100 * Math.sqrt(3) },
+          { x: 100, y: 100 * Math.sqrt(3) },
+          { x: 50, y: 50 * Math.sqrt(3) }
         ],
         color: [255, 0, 0],
       },
