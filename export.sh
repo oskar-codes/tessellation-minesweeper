@@ -1,4 +1,6 @@
 
+# Build the project
+npm run compile
 
 # If directory dist exists, remove it
 if [ -d "dist" ]; then
