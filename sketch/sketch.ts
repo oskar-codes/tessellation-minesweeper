@@ -23,9 +23,12 @@ let difficultyButtonArea: p5.Element;
 let easyButton: p5.Element;
 let intermediateButton: p5.Element;
 let hardButton: p5.Element;
+let flagCounter: p5.Element;
 let mainMenuArea: p5.Element;
 let startGameButton: p5.Element;
 let levelSelectArea: p5.Element;
+let levelsContainer: p5.Element;
+let descriptionContainer: p5.Element;
 let backToMenuButton: p5.Element;
 let suppressNextClick = false;
 let tessellation = TESSELLATIONS.DEFAULT;
@@ -49,7 +52,7 @@ let currentDifficulty: SelectedDifficulty = {
 function setup() {
   console.log("🚀 - Setup initialized - P5 is running");
 
-  image_lebron = loadImage("resources/lebronjames.jpeg");
+  image_lebron = loadImage("resources/pattern_upscaled.png");
 
   createCanvas(windowWidth, windowHeight);
   rectMode(CENTER).noFill().frameRate(30);
@@ -62,7 +65,7 @@ function setup() {
   // Create main menu area
   mainMenuArea = createDiv('');
   mainMenuArea.position(width / 2 - 150, height / 2 - 100);
-  mainMenuArea.style('background-color', 'rgba(255, 255, 255, 0.9)');
+  mainMenuArea.style('background-color', 'rgba(255, 255, 255, 0.95)');
   mainMenuArea.style('padding', '20px');
   mainMenuArea.style('border-radius', '10px');
   mainMenuArea.style('width', '300px');
@@ -98,17 +101,34 @@ function setup() {
   levelSelectArea.style('top', '50%');
   levelSelectArea.style('left', '50%');
   levelSelectArea.style('transform', 'translate(-50%, -50%)');
-  levelSelectArea.style('background-color', 'rgba(255, 255, 255, 0.9)');
+  levelSelectArea.style('background-color', 'rgba(255, 255, 255, 0.95)');
   levelSelectArea.style('padding', '20px');
   levelSelectArea.style('border-radius', '10px');
   levelSelectArea.style('width', '80%');
   levelSelectArea.style('text-align', 'center');
   levelSelectArea.style('z-index', '1000');
   levelSelectArea.style('display', 'flex');
-  levelSelectArea.style('flex-direction', 'row');
-  levelSelectArea.style('flex-wrap', 'wrap');
+  levelSelectArea.style('flex-direction', 'column');
   levelSelectArea.style('justify-content', 'center');
   levelSelectArea.hide();
+
+  levelsContainer = createDiv('');
+  levelsContainer.parent(levelSelectArea);
+  levelsContainer.style('display', 'flex');
+  levelsContainer.style('flex-wrap', 'wrap');
+  levelsContainer.style('justify-content', 'center');
+  levelsContainer.style('width', '100%');
+  levelsContainer.style('max-height', '800px');
+  levelsContainer.style('overflow-y', 'auto');
+  levelsContainer.style('margin-bottom', '20px');
+
+  descriptionContainer = createDiv('Select a level to play');
+  descriptionContainer.parent(levelSelectArea);
+  descriptionContainer.style('margin-top', '20px');
+  descriptionContainer.style('font-size', '18px');
+  descriptionContainer.style('color', '#555');
+  descriptionContainer.style('text-align', 'center');
+  descriptionContainer.style('height', '50px');
 
   // Create back button
   backToMenuButton = createButton('Back to Menu');
@@ -153,7 +173,7 @@ function setup() {
   for (const [_, ts] of Object.entries(TESSELLATIONS)) {
     // Create level card
     const levelCard = createDiv('');
-    levelCard.parent(levelSelectArea);
+    levelCard.parent(levelsContainer);
     levelCard.style('background-color', 'white');
     levelCard.style('border-radius', '8px');
     levelCard.style('padding', '15px');
@@ -161,8 +181,10 @@ function setup() {
     levelCard.style('box-shadow', '0 2px 4px rgba(0,0,0,0.1)');
     levelCard.style('cursor', 'pointer');
     levelCard.style('transition', 'transform 0.2s');
+    const index = i;
     levelCard.mouseOver(() => {
       levelCard.style('transform', 'scale(1.02)');
+      descriptionContainer.html(`Level ${index}: ${ts.description}`);
     });
     levelCard.mouseOut(() => {
       levelCard.style('transform', 'scale(1)');
@@ -276,6 +298,12 @@ function setup() {
     resetGame(currentDifficulty);
   });
 
+  flagCounter = createDiv('Flags: 0');
+  flagCounter.parent(difficultyButtonArea);
+  flagCounter.style('font-size', '16px');
+  flagCounter.style('color', '#333');
+  flagCounter.style('margin-left', '10px');
+
   // Create a button area for the 'Play Again' button in the bottom right
   buttonArea = createDiv('');
   buttonArea.position(width - 200, height - 100);
@@ -311,6 +339,7 @@ function initializeGame() {
     tessellation.scales[1]
   );
   difficultyButtonArea.show();
+  flagCounter.html(`Flags: ${board.mineCount - board.flagCount}`);
 }
 
 // Resizes the canvas when the window is resized
@@ -372,8 +401,9 @@ function mousePressed() {
       if (pointInPolygon({ x: mouseX, y: mouseY }, tile.shape.points)) {
         if (mouseButton === LEFT) {
           board.revealTile(i);
-        } else if (mouseButton === RIGHT) {
+        } else if (mouseButton === RIGHT && board.minesPlaced) {
           board.flagTile(i);
+          flagCounter.html(`Flags: ${board.mineCount - board.flagCount}`);
         }
         break;
       }
@@ -416,4 +446,5 @@ function resetGame(currentDifficulty: SelectedDifficulty) {
     currentDifficulty.scale
   );
   playAgainButton.hide();
+  flagCounter.html(`Flags: ${board.mineCount - board.flagCount}`);
 }

@@ -26,7 +26,7 @@ function drawTile(tile: Tile, showMines: boolean = false) {
   
   // Draw base tile
   stroke(0);
-  strokeWeight(1);
+  strokeWeight(2);
   beginShape();
   for (const point of tile.shape.points) {
     vertex(point.x, point.y);

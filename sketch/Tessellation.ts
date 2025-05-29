@@ -32,6 +32,7 @@ interface Tessellation {
   numUnitsX: [number, number, number];
   numUnitsY: [number, number, number];
   scales: [number, number, number];
+  description: string;
 }
 
 function drawTesselation(tessellation: Tessellation, startCoord: Point) {
@@ -84,7 +85,8 @@ const TESSELLATIONS: Record<string, Tessellation> = {
     },
     numUnitsX: [9, 13, 20],
     numUnitsY: [9, 13, 20],
-    scales: [0.8, 0.6, 0.4]
+    scales: [0.8, 0.6, 0.4],
+    description: 'The square grid, probably the most intuitive way to tile the plane. It consists of only squares that are all of the same size and share their edges. This makes this tiling one of the only three regular tilings.'
   },
   TRIANGLE: {
     unit: [
@@ -115,7 +117,8 @@ const TESSELLATIONS: Record<string, Tessellation> = {
     },
     numUnitsX: [9, 13, 20],
     numUnitsY: [9, 13, 18],
-    scales: [0.8, 0.6, 0.4]
+    scales: [0.8, 0.6, 0.4],
+    description: 'This tessellation is made of only equilateral triangles that all have the same size. They are arranged in a way such that they all meet along their edges. This is one of the only three regular tilings. Notice that in this tiling we can find the triangle in two different orientations.'
   },
   HEXAGON: {
     unit: [
@@ -141,7 +144,8 @@ const TESSELLATIONS: Record<string, Tessellation> = {
     },
     numUnitsX: [5, 8, 13],
     numUnitsY: [5, 8, 13],
-    scales: [0.6, 0.4, 0.25]
+    scales: [0.6, 0.4, 0.25],
+    description: 'This tessellation is made of only hexagons that all have the same size. They are arranged in a way such that they all meet along their edges. This is one of the only three regular tilings. This tiling can be found in nature, for example in honeycombs.'
   },
   SEMI_REGULAR_HEX_TRIANGLE: {
     unit: [
@@ -183,7 +187,8 @@ const TESSELLATIONS: Record<string, Tessellation> = {
     },
     numUnitsX: [6, 12, 18],
     numUnitsY: [6, 12, 18],
-    scales: [0.5, 0.3, 0.23]
+    scales: [0.5, 0.3, 0.23],
+    description: 'This tessellation is made of two types of shapes, triangles and hexagons. They are arranged in a way such that every vertex is surrounded by two triangles and two hexagons in a symmetric way. This makes this one of the eight uniform tilings.'
   },
   SEMI_REGULAR_OCTOGON_SQUARE: {
     unit: [
@@ -220,7 +225,8 @@ const TESSELLATIONS: Record<string, Tessellation> = {
     },
     numUnitsX: [5, 8, 12],
     numUnitsY: [5, 8, 12],
-    scales: [0.5, 0.3, 0.23]
+    scales: [0.5, 0.3, 0.23],
+    description: 'This tessellation is made of two types of shapes, squares and octagons. They are arranged in a way such that every vertex is surrounded by a square and two octagons. This makes this one of the eight uniform tilings.'
   },
   SEMI_REGULAR_TWO_DIFF_SQUARES: {
     unit: [
@@ -261,7 +267,8 @@ const TESSELLATIONS: Record<string, Tessellation> = {
     },
     numUnitsX: [5, 8, 12],
     numUnitsY: [5, 8, 12],
-    scales: [0.5, 0.3, 0.23]
+    scales: [0.5, 0.3, 0.23],
+    description: 'This tessellation is made of squares of two different sizes. This tiling is called non edge-to-edge because edges of a shape do not fully match with edges of another shape. It can be seen that this tiling is equivalent to the semi-regular tiling using octagons and squares.'
   },
   SEMI_REGULAR_HEX_TRIANGLES_NON_E2E: {
     unit: [
@@ -309,7 +316,8 @@ const TESSELLATIONS: Record<string, Tessellation> = {
     },
     numUnitsX: [5, 8, 12],
     numUnitsY: [5, 8, 12],
-    scales: [0.3, 0.2, 0.13]
+    scales: [0.3, 0.2, 0.13],
+    description: 'This tessellation is made of triangles and hexagons. The edges of the hexagons are twice as long as the edges of the triangles, making this a non edge-to-edge tiling because edges of a shape do not fully match with edges of another shape.'
   },
   SEMI_REGULAR_SURROUNDED_HEXAGON: {
     unit: [
@@ -378,7 +386,8 @@ const TESSELLATIONS: Record<string, Tessellation> = {
     },
     numUnitsX: [5, 8, 12],
     numUnitsY: [5, 8, 12],
-    scales: [0.5, 0.4, 0.26]
+    scales: [0.5, 0.4, 0.26],
+    description: 'This tessellation is made of equilateral triangles, squares and regular hexagons, which all have the same side length. They are arranged in a way such that every vertex is surrounded by a triangle, two squares and a hexagon. This makes this one of the eight uniform tilings'
   },
   HEXAGONE_SQUARE_TRIANGLE_2_REG: {
     unit: [
@@ -555,7 +564,8 @@ const TESSELLATIONS: Record<string, Tessellation> = {
     },
     numUnitsX: [3, 5, 7],
     numUnitsY: [2, 5, 7],
-    scales: [0.8, 0.4, 0.29]
+    scales: [0.8, 0.4, 0.29],
+    description: 'This tessellation is made of equilateral triangles, squares and regular hexagons, which all have the same side length. They are arranged in a way such that there are two types of vertices. All vertices are surrounded by a triangle, two squares, and a hexagon, but for some vertices the surrounding squares are adjacent and for others they aren’t. Since there are two types of vertices this is one of the twenty 2-uniform tilings.'
   },
 }
 
